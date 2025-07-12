@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillswap - Connect Through Skills</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Skillswap</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">Discover</a>
+                <a href="profile.html" class="nav-link">My Skills</a>
+                <a href="messages.html" class="nav-link">Messages</a>
+                <a href="notifications.html" class="nav-link">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </a>
+                <div class="nav-profile">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="gradient-text">Connect</span> Through Skills
+            </h1>
+            <p class="hero-subtitle">Find people with complementary skills and create amazing projects together</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">2,847</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">Skills Available</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">892</span>
+                    <span class="stat-label">Successful Swaps</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-cards">
+                <div class="floating-card" style="--delay: 0s">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="floating-card" style="--delay: 1s">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="floating-card" style="--delay: 2s">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="floating-card" style="--delay: 3s">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Discovery Section -->
+    <section class="discovery">
+        <div class="container">
+            <div class="section-header">
+                <h2>Discover Amazing People</h2>
+                <p>Browse through profiles and find your perfect skill match</p>
+            </div>
+            
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label>Filter by:</label>
+                    <select class="filter-select" id="skillFilter">
+                        <option value="">All Skills</option>
+                        <option value="programming">Programming</option>
+                        <option value="design">Design</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="writing">Writing</option>
+                        <option value="photography">Photography</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select class="filter-select" id="sortFilter">
+                        <option value="recent">Most Recent</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="skills">Most Skills</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- User Cards Container -->
+            <div class="user-cards-container" id="userCardsContainer">
+                <!-- User cards will be dynamically generated here -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <span>Load More</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Suggestions Section -->
+    <section class="suggestions">
+        <div class="container">
+            <div class="section-header">
+                <h2>Recommended for You</h2>
+                <p>Based on your skills and interests</p>
+            </div>
+            <div class="suggestions-grid" id="suggestionsGrid">
+                <!-- Suggestions will be dynamically generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Request Modal -->
+    <div class="modal" id="requestModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Skill Swap Request</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="user-info">
+                    <img src="" alt="User" id="modalUserImage">
+                    <div>
+                        <h4 id="modalUserName"></h4>
+                        <p id="modalUserSkills"></p>
+                    </div>
+                </div>
+                <div class="request-form">
+                    <label for="requestMessage">Message (optional):</label>
+                    <textarea id="requestMessage" placeholder="Tell them why you'd like to swap skills..."></textarea>
+                    <div class="skill-exchange">
+                        <div class="exchange-item">
+                            <label>You'll teach:</label>
+                            <select id="teachSkill">
+                                <option value="">Select a skill</option>
+                            </select>
+                        </div>
+                        <div class="exchange-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="exchange-item">
+                            <label>You'll learn:</label>
+                            <select id="learnSkill">
+                                <option value="">Select a skill</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelRequest">Cancel</button>
+                <button class="btn-primary" id="sendRequest">Send Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
