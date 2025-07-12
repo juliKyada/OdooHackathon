@@ -471,12 +471,163 @@
 
                     <div>
                         <label class="block text-white font-semibold mb-3">Availability</label>
-                        <select id="availability" class="cyber-input w-full">
-                            <option value="available">Available for swaps</option>
-                            <option value="busy">Busy but accepting requests</option>
-                            <option value="limited">Limited availability</option>
-                            <option value="offline">Currently offline</option>
-                        </select>
+                        <div class="space-y-4">
+                            <!-- Weekends Checkbox -->
+                            <div>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" id="weekends" class="mr-2 accent-pink-400">
+                                    Weekends
+                                </label>
+                                <div id="weekendOptions" class="ml-6 mt-2 space-y-2 hidden">
+                                    <!-- Saturday Options -->
+                                    <div>
+                                        <p class="text-white font-medium">Saturday</p>
+                                        <div class="flex space-x-4 mt-1">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="saturday-time mr-1 accent-cyan-400" data-day="Saturday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="saturday-time mr-1 accent-cyan-400" data-day="Saturday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="saturday-time mr-1 accent-cyan-400" data-day="Saturday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- Sunday Options -->
+                                    <div>
+                                        <p class="text-white font-medium">Sunday</p>
+                                        <div class="flex space-x-4 mt-1">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="sunday-time mr-1 accent-cyan-400" data-day="Sunday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="sunday-time mr-1 accent-cyan-400" data-day="Sunday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="sunday-time mr-1 accent-cyan-400" data-day="Sunday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Weekdays Checkbox -->
+                            <div>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" id="weekdays" class="mr-2 accent-pink-400">
+                                    Weekdays
+                                </label>
+                                <div id="weekdayOptions" class="ml-6 mt-2 space-y-2 hidden">
+                                    <!-- Monday to Friday -->
+                                    <div>
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" class="weekday-day mr-2 accent-cyan-400" data-day="Monday">
+                                            Monday
+                                        </label>
+                                        <div class="weekday-times ml-6 mt-1 space-x-4 hidden" data-day="Monday">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Monday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Monday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Monday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" class="weekday-day mr-2 accent-cyan-400" data-day="Tuesday">
+                                            Tuesday
+                                        </label>
+                                        <div class="weekday-times ml-6 mt-1 space-x-4 hidden" data-day="Tuesday">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Tuesday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Tuesday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Tuesday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" class="weekday-day mr-2 accent-cyan-400" data-day="Wednesday">
+                                            Wednesday
+                                        </label>
+                                        <div class="weekday-times ml-6 mt-1 space-x-4 hidden" data-day="Wednesday">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Wednesday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Wednesday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Wednesday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" class="weekday-day mr-2 accent-cyan-400" data-day="Thursday">
+                                            Thursday
+                                        </label>
+                                        <div class="weekday-times ml-6 mt-1 space-x-4 hidden" data-day="Thursday">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Thursday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Thursday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Thursday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" class="weekday-day mr-2 accent-cyan-400" data-day="Friday">
+                                            Friday
+                                        </label>
+                                        <div class="weekday-times ml-6 mt-1 space-x-4 hidden" data-day="Friday">
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Friday" data-time="Morning">
+                                                Morning
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Friday" data-time="Afternoon">
+                                                Afternoon
+                                            </label>
+                                            <label class="flex items-center text-white text-sm">
+                                                <input type="checkbox" class="weekday-time mr-1 accent-cyan-400" data-day="Friday" data-time="Evening">
+                                                Evening
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex justify-between mt-6">
@@ -520,77 +671,22 @@
     </div>
 
     <script>
+        // Form Navigation
         let currentStep = 1;
         const totalSteps = 4;
-        let selectedSkillsOffered = [];
-        let selectedSkillsWanted = [];
+        const progressBar = document.getElementById('progressBar');
 
-        // Particle System
-        const particlesContainer = document.getElementById('particles');
-        const particles = [];
-        
-        class Particle {
-            constructor() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.vx = (Math.random() - 0.5) * 1;
-                this.vy = (Math.random() - 0.5) * 1;
-                this.size = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.5 + 0.2;
-                this.color = Math.random() > 0.5 ? '#ff6b6b' : '#00d4ff';
-            }
-            
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                
-                if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
-                if (this.y < 0 || this.y > window.innerHeight) this.vy *= -1;
-            }
-            
-            draw() {
-                const particle = document.createElement('div');
-                particle.style.position = 'absolute';
-                particle.style.left = this.x + 'px';
-                particle.style.top = this.y + 'px';
-                particle.style.width = this.size + 'px';
-                particle.style.height = this.size + 'px';
-                particle.style.background = this.color;
-                particle.style.opacity = this.opacity;
-                particle.style.borderRadius = '50%';
-                particle.style.pointerEvents = 'none';
-                particle.style.boxShadow = `0 0 ${this.size * 2}px ${this.color}`;
-                
-                particlesContainer.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 200);
-            }
+        function updateProgressBar() {
+            const progress = (currentStep / totalSteps) * 100;
+            progressBar.style.width = `${progress}%`;
         }
-        
-        // Create particles
-        for (let i = 0; i < 30; i++) {
-            particles.push(new Particle());
-        }
-        
-        function animateParticles() {
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        
-        animateParticles();
 
-        // Form Navigation
         function nextStep() {
             if (currentStep < totalSteps) {
                 document.getElementById(`step${currentStep}`).classList.remove('active');
                 currentStep++;
                 document.getElementById(`step${currentStep}`).classList.add('active');
-                updateProgress();
+                updateProgressBar();
             }
         }
 
@@ -599,40 +695,85 @@
                 document.getElementById(`step${currentStep}`).classList.remove('active');
                 currentStep--;
                 document.getElementById(`step${currentStep}`).classList.add('active');
-                updateProgress();
+                updateProgressBar();
             }
         }
 
-        function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
+        // Skill Selection
+        const skillsOffered = document.getElementById('skillsOffered').querySelectorAll('.skill-option');
+        const skillsWanted = document.getElementById('skillsWanted').querySelectorAll('.skill-option');
+
+        function toggleSkillSelection(skillElements) {
+            skillElements.forEach(skill => {
+                skill.addEventListener('click', () => {
+                    skill.classList.toggle('selected');
+                });
+            });
         }
 
-        // Skill Selection
-        document.querySelectorAll('#skillsOffered .skill-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const skill = this.dataset.skill;
-                if (this.classList.contains('selected')) {
-                    this.classList.remove('selected');
-                    selectedSkillsOffered = selectedSkillsOffered.filter(s => s !== skill);
-                } else {
-                    this.classList.add('selected');
-                    selectedSkillsOffered.push(skill);
+        toggleSkillSelection(skillsOffered);
+        toggleSkillSelection(skillsWanted);
+
+        // Dynamic Availability Section
+        const weekendsCheckbox = document.getElementById('weekends');
+        const weekdaysCheckbox = document.getElementById('weekdays');
+        const weekendOptions = document.getElementById('weekendOptions');
+        const weekdayOptions = document.getElementById('weekdayOptions');
+        const weekdayDayCheckboxes = document.querySelectorAll('.weekday-day');
+        const availabilityData = [];
+
+        // Toggle Weekend Options
+        weekendsCheckbox.addEventListener('change', () => {
+            weekendOptions.classList.toggle('hidden', !weekendsCheckbox.checked);
+            if (!weekendsCheckbox.checked) {
+                document.querySelectorAll('#weekendOptions input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateAvailabilityData();
+            }
+        });
+
+        // Toggle Weekday Options
+        weekdaysCheckbox.addEventListener('change', () => {
+            weekdayOptions.classList.toggle('hidden', !weekdaysCheckbox.checked);
+            if (!weekdaysCheckbox.checked) {
+                document.querySelectorAll('#weekdayOptions input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                    const timesDiv = document.querySelector(`.weekday-times[data-day="${checkbox.dataset.day}"]`);
+                    if (timesDiv) timesDiv.classList.add('hidden');
+                });
+                updateAvailabilityData();
+            }
+        });
+
+        // Toggle Time Options for Weekdays
+        weekdayDayCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const timesDiv = document.querySelector(`.weekday-times[data-day="${checkbox.dataset.day}"]`);
+                timesDiv.classList.toggle('hidden', !checkbox.checked);
+                if (!checkbox.checked) {
+                    document.querySelectorAll(`.weekday-times[data-day="${checkbox.dataset.day}"] input`).forEach(timeCheckbox => {
+                        timeCheckbox.checked = false;
+                    });
+                    updateAvailabilityData();
                 }
             });
         });
 
-        document.querySelectorAll('#skillsWanted .skill-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const skill = this.dataset.skill;
-                if (this.classList.contains('selected')) {
-                    this.classList.remove('selected');
-                    selectedSkillsWanted = selectedSkillsWanted.filter(s => s !== skill);
-                } else {
-                    this.classList.add('selected');
-                    selectedSkillsWanted.push(skill);
-                }
+        // Update Availability Data
+        function updateAvailabilityData() {
+            availabilityData.length = 0; // Clear existing data
+            document.querySelectorAll('#weekendOptions input:checked, #weekdayOptions .weekday-time:checked').forEach(checkbox => {
+                availabilityData.push({
+                    day: checkbox.dataset.day,
+                    time: checkbox.dataset.time
+                });
             });
+        }
+
+        // Collect all selected times on change
+        document.querySelectorAll('#weekendOptions input, #weekdayOptions .weekday-time').forEach(checkbox => {
+            checkbox.addEventListener('change', updateAvailabilityData);
         });
 
         // Form Submission
@@ -641,111 +782,88 @@
         const loadingSpinner = document.getElementById('loadingSpinner');
         const successModal = document.getElementById('successModal');
 
-        registerForm.addEventListener('submit', function(e) {
+        registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            if (selectedSkillsOffered.length === 0) {
-                alert('Please select at least one skill you can offer!');
-                return;
-            }
-            
-            // Show loading state
-            buttonText.textContent = 'Creating Account...';
-            loadingSpinner.classList.remove('hidden');
-            
-            // Simulate account creation
-            setTimeout(() => {
-                // Get form data
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const username = document.getElementById('username').value;
-                const email = document.getElementById('email').value;
-                const bio = document.getElementById('bio').value;
-                const location = document.getElementById('location').value;
-                const availability = document.getElementById('availability').value;
-                
-                // Create user object
-                const user = {
-                    username: username,
-                    email: email,
-                    firstName: firstName,
-                    lastName: lastName,
-                    avatar: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(),
-                    skillsOffered: selectedSkillsOffered,
-                    skillsWanted: selectedSkillsWanted,
-                    bio: bio || 'Passionate about learning and sharing skills!',
-                    location: location || 'New York, USA',
-                    availability: availability,
-                    isLoggedIn: true
-                };
-                
-                // Save user to localStorage
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                showSuccessModal();
-            }, 2000);
-        });
+            if (currentStep === totalSteps) {
+                // Validate Passwords
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
 
-        function showSuccessModal() {
-            successModal.classList.remove('hidden');
-            buttonText.textContent = 'Create Account';
-            loadingSpinner.classList.add('hidden');
-        }
+                // Collect Form Data
+                const formData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    password: password,
+                    skillsOffered: Array.from(skillsOffered)
+                        .filter(skill => skill.classList.contains('selected'))
+                        .map(skill => skill.dataset.skill),
+                    skillsWanted: Array.from(skillsWanted)
+                        .filter(skill => skill.classList.contains('selected'))
+                        .map(skill => skill.dataset.skill),
+                    bio: document.getElementById('bio').value,
+                    location: document.getElementById('location').value,
+                    availability: availabilityData
+                };
+
+                // Show Loading Spinner
+                buttonText.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+
+                // Simulate API Call
+                setTimeout(() => {
+                    buttonText.classList.remove('hidden');
+                    loadingSpinner.classList.add('hidden');
+                    successModal.classList.remove('hidden');
+                    console.log('Form Data:', formData); // For debugging
+                }, 1000);
+            }
+        });
 
         function closeSuccessModal() {
             successModal.classList.add('hidden');
-            window.location.href = 'index.html';
+            registerForm.reset();
+            currentStep = 1;
+            document.getElementById('step1').classList.add('active');
+            document.querySelectorAll('.form-step:not(#step1)').forEach(step => {
+                step.classList.remove('active');
+            });
+            updateProgressBar();
+            availabilityData.length = 0;
+            document.querySelectorAll('.skill-option').forEach(skill => {
+                skill.classList.remove('selected');
+            });
+            document.querySelectorAll('#weekendOptions input, #weekdayOptions input').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            weekendOptions.classList.add('hidden');
+            weekdayOptions.classList.add('hidden');
+            document.querySelectorAll('.weekday-times').forEach(div => {
+                div.classList.add('hidden');
+            });
         }
 
-        // Interactive Effects
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.createElement('div');
-            cursor.style.position = 'fixed';
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursor.style.width = '30px';
-            cursor.style.height = '30px';
-            cursor.style.background = 'radial-gradient(circle, rgba(255, 107, 107, 0.3) 0%, transparent 70%)';
-            cursor.style.borderRadius = '50%';
-            cursor.style.pointerEvents = 'none';
-            cursor.style.zIndex = '9999';
-            
-            document.body.appendChild(cursor);
-            
-            setTimeout(() => {
-                cursor.remove();
-            }, 1000);
-        });
+        // Particle System (Basic Implementation)
+        const particlesContainer = document.getElementById('particles');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'floating-element';
+            particle.style.width = `${Math.random() * 50 + 20}px`;
+            particle.style.height = particle.style.width;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 4 + 4}s`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            particlesContainer.appendChild(particle);
+            setTimeout(() => particle.remove(), 6000);
+        }
 
-        // Input focus effects
-        document.querySelectorAll('.cyber-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.02)';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'Enter') {
-                if (currentStep === totalSteps) {
-                    registerForm.dispatchEvent(new Event('submit'));
-                } else {
-                    nextStep();
-                }
-            }
-        });
+        setInterval(createParticle, 500);
     </script>
 </body>
-</html> 
+</html>
