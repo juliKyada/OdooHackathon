@@ -663,6 +663,33 @@
             
             // Simulate account creation
             setTimeout(() => {
+                // Get form data
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const bio = document.getElementById('bio').value;
+                const location = document.getElementById('location').value;
+                const availability = document.getElementById('availability').value;
+                
+                // Create user object
+                const user = {
+                    username: username,
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    avatar: firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase(),
+                    skillsOffered: selectedSkillsOffered,
+                    skillsWanted: selectedSkillsWanted,
+                    bio: bio || 'Passionate about learning and sharing skills!',
+                    location: location || 'New York, USA',
+                    availability: availability,
+                    isLoggedIn: true
+                };
+                
+                // Save user to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
                 showSuccessModal();
             }, 2000);
         });

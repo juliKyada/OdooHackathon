@@ -312,7 +312,7 @@
             <!-- Logo -->
             <div class="text-center mb-8">
                 <h1 class="orbitron text-4xl font-black mb-2 neon-text">
-                    <span class="text-cyan-400">Skill</span><span class="text-pink-400 neon-text-pink">Swap</span>
+                    <span class="text-cyan-400">Skill</span><span class="text-pink-400">Swap</span>
                 </h1>
                 <p class="text-white/60 text-lg">Enter the Future of Learning</p>
             </div>
@@ -354,17 +354,6 @@
                     <div id="loadingSpinner" class="loading-spinner hidden mx-auto mt-2"></div>
                 </button>
             </form>
-
-            <!-- Demo Login Buttons -->
-            <div class="mt-8 space-y-3">
-                <p class="text-white/60 text-center text-sm">Quick Demo Access:</p>
-                <button onclick="demoLogin('user')" class="cyber-button w-full text-sm" style="background: linear-gradient(45deg, #4CAF50, #45a049);">
-                    Demo User Login
-                </button>
-                <button onclick="demoLogin('admin')" class="cyber-button w-full text-sm" style="background: linear-gradient(45deg, #FF9800, #F57C00);">
-                    Admin Panel Access
-                </button>
-            </div>
 
             <!-- Register Link -->
             <div class="mt-8 text-center">
@@ -475,6 +464,24 @@
             // Simulate authentication
             setTimeout(() => {
                 if (username && password) {
+                    // Create user object
+                    const user = {
+                        username: username,
+                        email: username + '@example.com',
+                        firstName: username.charAt(0).toUpperCase() + username.slice(1),
+                        lastName: 'User',
+                        avatar: username.charAt(0).toUpperCase(),
+                        skillsOffered: ['Programming', 'Design'],
+                        skillsWanted: ['Marketing', 'Writing'],
+                        bio: 'Passionate about learning and sharing skills!',
+                        location: 'New York, USA',
+                        availability: 'available',
+                        isLoggedIn: true
+                    };
+                    
+                    // Save user to localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
                     showSuccessModal();
                 } else {
                     alert('Please enter valid credentials');
@@ -496,20 +503,7 @@
 
         function closeSuccessModal() {
             successModal.classList.add('hidden');
-        }
-
-        // Demo Login Functions
-        function demoLogin(type) {
-            buttonText.textContent = 'Accessing...';
-            loadingSpinner.classList.remove('hidden');
-            
-            setTimeout(() => {
-                if (type === 'admin') {
-                    window.location.href = 'admin.html';
-                } else {
-                    showSuccessModal();
-                }
-            }, 1500);
+            window.location.href = 'index.html';
         }
 
         // Interactive Effects

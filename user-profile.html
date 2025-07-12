@@ -266,6 +266,24 @@
             animation: status-pulse 2s ease-in-out infinite;
         }
 
+        .status-busy {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .status-limited {
+            background: rgba(255, 69, 0, 0.2);
+            color: #ff4500;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .status-offline {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
         @keyframes status-pulse {
             0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
             50% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.6); }
@@ -365,9 +383,8 @@
             <a href="index.html" class="orbitron text-2xl font-bold neon-text">
                 <span class="text-cyan-400">←</span> <span class="text-cyan-400">Skill</span><span class="text-pink-400">Swap</span>
             </a>
-            <div class="flex items-center space-x-4">
-                <a href="login.html" class="cyber-button text-sm">Login</a>
-                <a href="register.html" class="text-white hover:text-cyan-400 transition-colors">Register</a>
+            <div class="flex items-center space-x-4" id="navAuth">
+                <!-- This will be populated by JavaScript -->
             </div>
         </div>
     </nav>
@@ -377,9 +394,9 @@
         <div class="holographic-profile w-full max-w-4xl p-8">
             <!-- Profile Header -->
             <div class="profile-header text-center mb-8">
-                <div class="profile-avatar">AS</div>
-                <h1 class="orbitron text-4xl font-black mb-2 neon-text">Alex Smith</h1>
-                <p class="text-cyan-400 text-xl mb-3">Full Stack Developer</p>
+                <div class="profile-avatar" id="profileAvatar">AS</div>
+                <h1 class="orbitron text-4xl font-black mb-2 neon-text" id="profileName">Alex Smith</h1>
+                <p class="text-cyan-400 text-xl mb-3" id="profileTitle">Full Stack Developer</p>
                 <div class="rating-stars">
                     <span class="star">★</span>
                     <span class="star">★</span>
@@ -388,7 +405,7 @@
                     <span class="star">★</span>
                 </div>
                 <p class="text-white/60 mb-4">4.9/5.0 (127 reviews)</p>
-                <span class="status-badge status-available">🟢 Available for Swaps</span>
+                <span class="status-badge status-available" id="profileStatus">🟢 Available for Swaps</span>
             </div>
 
             <!-- Profile Content -->
@@ -397,8 +414,11 @@
                 <div class="space-y-6">
                     <!-- Skills Offered -->
                     <div class="holographic-profile p-6">
-                        <h3 class="orbitron text-xl font-bold text-white mb-4 neon-text">Skills Offered</h3>
-                        <div class="flex flex-wrap">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-xl font-bold text-white neon-text">Skills Offered</h3>
+                            <button onclick="toggleEdit('skillsOffered')" class="text-cyan-400 hover:text-cyan-300 text-sm">Edit</button>
+                        </div>
+                        <div class="flex flex-wrap" id="skillsOfferedDisplay">
                             <span class="skill-tag">React</span>
                             <span class="skill-tag">Node.js</span>
                             <span class="skill-tag">Python</span>
@@ -408,22 +428,86 @@
                             <span class="skill-tag">TypeScript</span>
                             <span class="skill-tag">GraphQL</span>
                         </div>
+                        <div id="skillsOfferedEdit" class="hidden">
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="React" class="mr-2"> React
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Node.js" class="mr-2"> Node.js
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Python" class="mr-2"> Python
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="AWS" class="mr-2"> AWS
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="MongoDB" class="mr-2"> MongoDB
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Docker" class="mr-2"> Docker
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="TypeScript" class="mr-2"> TypeScript
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="GraphQL" class="mr-2"> GraphQL
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="saveSkills('skillsOffered')" class="cyber-button text-sm">Save</button>
+                                <button onclick="cancelEdit('skillsOffered')" class="cyber-button text-sm" style="background: linear-gradient(45deg, #666, #999);">Cancel</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Skills Wanted -->
                     <div class="holographic-profile p-6">
-                        <h3 class="orbitron text-xl font-bold text-white mb-4 neon-text-pink">Skills Wanted</h3>
-                        <div class="flex flex-wrap">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-xl font-bold text-white neon-text-pink">Skills Wanted</h3>
+                            <button onclick="toggleEdit('skillsWanted')" class="text-pink-400 hover:text-pink-300 text-sm">Edit</button>
+                        </div>
+                        <div class="flex flex-wrap" id="skillsWantedDisplay">
                             <span class="skill-tag" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e);">UI/UX Design</span>
                             <span class="skill-tag" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e);">Mobile Development</span>
                             <span class="skill-tag" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e);">DevOps</span>
+                        </div>
+                        <div id="skillsWantedEdit" class="hidden">
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="UI/UX Design" class="mr-2"> UI/UX Design
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Mobile Development" class="mr-2"> Mobile Development
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="DevOps" class="mr-2"> DevOps
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Digital Marketing" class="mr-2"> Digital Marketing
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Content Writing" class="mr-2"> Content Writing
+                                </label>
+                                <label class="flex items-center text-white">
+                                    <input type="checkbox" value="Photography" class="mr-2"> Photography
+                                </label>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="saveSkills('skillsWanted')" class="cyber-button text-sm">Save</button>
+                                <button onclick="cancelEdit('skillsWanted')" class="cyber-button text-sm" style="background: linear-gradient(45deg, #666, #999);">Cancel</button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Availability -->
                     <div class="holographic-profile p-6">
-                        <h3 class="orbitron text-xl font-bold text-white mb-4">Availability</h3>
-                        <div class="space-y-3">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-xl font-bold text-white">Availability</h3>
+                            <button onclick="toggleEdit('availability')" class="text-cyan-400 hover:text-cyan-300 text-sm">Edit</button>
+                        </div>
+                        <div id="availabilityDisplay" class="space-y-3">
                             <div class="flex justify-between items-center">
                                 <span class="text-white">Weekdays</span>
                                 <span class="text-green-400">6:00 PM - 10:00 PM</span>
@@ -437,6 +521,21 @@
                                 <span class="text-cyan-400">EST (UTC-5)</span>
                             </div>
                         </div>
+                        <div id="availabilityEdit" class="hidden space-y-4">
+                            <div>
+                                <label class="block text-white mb-2">Status</label>
+                                <select id="availabilityStatus" class="cyber-input w-full">
+                                    <option value="available">Available for swaps</option>
+                                    <option value="busy">Busy but accepting requests</option>
+                                    <option value="limited">Limited availability</option>
+                                    <option value="offline">Currently offline</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="saveAvailability()" class="cyber-button text-sm">Save</button>
+                                <button onclick="cancelEdit('availability')" class="cyber-button text-sm" style="background: linear-gradient(45deg, #666, #999);">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -444,71 +543,48 @@
                 <div class="space-y-6">
                     <!-- About -->
                     <div class="holographic-profile p-6">
-                        <h3 class="orbitron text-xl font-bold text-white mb-4">About</h3>
-                        <p class="text-white/80 leading-relaxed">
-                            Passionate full-stack developer with 5+ years of experience building scalable web applications. 
-                            I love learning new technologies and sharing knowledge with others. Always excited to help 
-                            others grow their skills while expanding my own expertise.
-                        </p>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-xl font-bold text-white">About</h3>
+                            <button onclick="toggleEdit('about')" class="text-cyan-400 hover:text-cyan-300 text-sm">Edit</button>
+                        </div>
+                        <div id="aboutDisplay">
+                            <p class="text-white/80 leading-relaxed">
+                                Passionate full-stack developer with 5+ years of experience building scalable web applications. 
+                                I love learning new technologies and sharing knowledge with others. Always excited to help 
+                                others grow their skills while expanding my own expertise.
+                            </p>
+                        </div>
+                        <div id="aboutEdit" class="hidden">
+                            <textarea id="aboutText" class="cyber-input w-full h-32 resize-none" 
+                                      placeholder="Tell us about yourself...">Passionate full-stack developer with 5+ years of experience building scalable web applications. I love learning new technologies and sharing knowledge with others. Always excited to help others grow their skills while expanding my own expertise.</textarea>
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="saveAbout()" class="cyber-button text-sm">Save</button>
+                                <button onclick="cancelEdit('about')" class="cyber-button text-sm" style="background: linear-gradient(45deg, #666, #999);">Cancel</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Recent Reviews -->
+                    <!-- Profile Photo Upload -->
                     <div class="holographic-profile p-6">
-                        <h3 class="orbitron text-xl font-bold text-white mb-4">Recent Reviews</h3>
-                        <div class="space-y-4">
-                            <div class="review-card">
-                                <div class="flex items-center justify-between mb-2">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-yellow-400 flex items-center justify-center text-white font-bold text-sm mr-3">
-                                            MJ
-                                        </div>
-                                        <span class="text-white font-semibold">Maria Johnson</span>
-                                    </div>
-                                    <div class="rating-stars">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                    </div>
-                                </div>
-                                <p class="text-white/70 text-sm">
-                                    "Alex is an amazing teacher! He helped me understand React hooks in just one session. 
-                                    Very patient and knowledgeable."
-                                </p>
+                        <h3 class="orbitron text-xl font-bold text-white mb-4">Profile Photo</h3>
+                        <div class="text-center">
+                            <div class="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400 to-pink-400 flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4" id="profilePhoto">
+                                AS
                             </div>
-
-                            <div class="review-card">
-                                <div class="flex items-center justify-between mb-2">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-green-400 to-blue-400 flex items-center justify-center text-white font-bold text-sm mr-3">
-                                            DC
-                                        </div>
-                                        <span class="text-white font-semibold">David Chen</span>
-                                    </div>
-                                    <div class="rating-stars">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                    </div>
-                                </div>
-                                <p class="text-white/70 text-sm">
-                                    "Excellent swap experience! Alex taught me Node.js backend development while I helped 
-                                    him with UI design principles. Highly recommended!"
-                                </p>
-                            </div>
+                            <input type="file" id="photoUpload" accept="image/*" class="hidden">
+                            <button onclick="document.getElementById('photoUpload').click()" class="cyber-button text-sm">
+                                Upload Photo
+                            </button>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button onclick="openSwapModal()" class="cyber-button flex-1">
-                            Request Skill Swap
+                        <button onclick="saveAllChanges()" class="cyber-button flex-1">
+                            Save All Changes
                         </button>
-                        <button onclick="sendMessage()" class="cyber-button flex-1" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e);">
-                            Send Message
+                        <button onclick="window.location.href='index.html'" class="cyber-button flex-1" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e);">
+                            Back to Home
                         </button>
                     </div>
                 </div>
@@ -676,17 +752,261 @@
             });
         });
 
-        // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Swap request sent successfully! Alex will review your request.');
-            closeSwapModal();
+        // User Authentication Management
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const navAuth = document.getElementById('navAuth');
+            
+            if (currentUser && currentUser.isLoggedIn) {
+                // User is logged in - show profile and logout
+                navAuth.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="relative group">
+                            <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 text-white hover:text-cyan-400 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm">
+                                    ${currentUser.avatar}
+                                </div>
+                                <span class="hidden md:block">${currentUser.firstName}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                <a href="user-profile.html" class="block px-4 py-2 text-white hover:bg-white/10 transition-colors">My Profile</a>
+                                <a href="#" class="block px-4 py-2 text-white hover:bg-white/10 transition-colors">Settings</a>
+                                <hr class="border-white/20">
+                                <button onclick="logout()" class="block w-full text-left px-4 py-2 text-red-400 hover:bg-white/10 transition-colors">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // User is not logged in - redirect to login
+                window.location.href = 'login.html';
+            }
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('opacity-0');
+            menu.classList.toggle('invisible');
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
+        // Profile Management
+        let currentUser = null;
+
+        function loadUserProfile() {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update profile display
+            document.getElementById('profileAvatar').textContent = currentUser.avatar;
+            document.getElementById('profilePhoto').textContent = currentUser.avatar;
+            document.getElementById('profileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('profileTitle').textContent = currentUser.bio ? currentUser.bio.split(' ').slice(0, 3).join(' ') + '...' : 'Skill Swapper';
+            
+            // Load saved profile photo if it exists
+            if (currentUser.photoData) {
+                const photoElement = document.getElementById('profilePhoto');
+                const avatarElement = document.getElementById('profileAvatar');
+                
+                photoElement.style.backgroundImage = `url(${currentUser.photoData})`;
+                photoElement.style.backgroundSize = 'cover';
+                photoElement.style.backgroundPosition = 'center';
+                photoElement.textContent = '';
+                
+                avatarElement.style.backgroundImage = `url(${currentUser.photoData})`;
+                avatarElement.style.backgroundSize = 'cover';
+                avatarElement.style.backgroundPosition = 'center';
+                avatarElement.textContent = '';
+            }
+            
+            // Update status
+            const statusElement = document.getElementById('profileStatus');
+            if (currentUser.availability === 'available') {
+                statusElement.textContent = '🟢 Available for Swaps';
+                statusElement.className = 'status-badge status-available';
+            } else if (currentUser.availability === 'busy') {
+                statusElement.textContent = '🟡 Busy but accepting requests';
+                statusElement.className = 'status-badge status-busy';
+            } else if (currentUser.availability === 'limited') {
+                statusElement.textContent = '🟠 Limited availability';
+                statusElement.className = 'status-badge status-limited';
+            } else {
+                statusElement.textContent = '🔴 Currently offline';
+                statusElement.className = 'status-badge status-offline';
+            }
+
+            // Update skills offered
+            updateSkillsDisplay('skillsOfferedDisplay', currentUser.skillsOffered || ['React', 'Node.js', 'Python']);
+            
+            // Update skills wanted
+            updateSkillsDisplay('skillsWantedDisplay', currentUser.skillsWanted || ['UI/UX Design', 'Mobile Development'], true);
+            
+            // Update about section
+            document.getElementById('aboutDisplay').innerHTML = `<p class="text-white/80 leading-relaxed">${currentUser.bio || 'Passionate about learning and sharing skills!'}</p>`;
+        }
+
+        function updateSkillsDisplay(containerId, skills, isWanted = false) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            skills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'skill-tag';
+                if (isWanted) {
+                    tag.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e)';
+                }
+                tag.textContent = skill;
+                container.appendChild(tag);
+            });
+        }
+
+        // Edit functionality
+        function toggleEdit(section) {
+            const displayElement = document.getElementById(section === 'about' ? 'aboutDisplay' : section + 'Display');
+            const editElement = document.getElementById(section === 'about' ? 'aboutEdit' : section + 'Edit');
+            
+            displayElement.classList.add('hidden');
+            editElement.classList.remove('hidden');
+            
+            // Pre-populate edit fields
+            if (section === 'skillsOffered') {
+                populateSkillsCheckboxes('skillsOfferedEdit', currentUser.skillsOffered || []);
+            } else if (section === 'skillsWanted') {
+                populateSkillsCheckboxes('skillsWantedEdit', currentUser.skillsWanted || []);
+            } else if (section === 'availability') {
+                document.getElementById('availabilityStatus').value = currentUser.availability || 'available';
+            } else if (section === 'about') {
+                document.getElementById('aboutText').value = currentUser.bio || '';
+            }
+        }
+
+        function populateSkillsCheckboxes(containerId, selectedSkills) {
+            const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]`);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectedSkills.includes(checkbox.value);
+            });
+        }
+
+        function cancelEdit(section) {
+            const displayElement = document.getElementById(section === 'about' ? 'aboutDisplay' : section + 'Display');
+            const editElement = document.getElementById(section === 'about' ? 'aboutEdit' : section + 'Edit');
+            
+            displayElement.classList.remove('hidden');
+            editElement.classList.add('hidden');
+        }
+
+        function saveSkills(section) {
+            const checkboxes = document.querySelectorAll(`#${section}Edit input[type="checkbox"]:checked`);
+            const skills = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (section === 'skillsOffered') {
+                currentUser.skillsOffered = skills;
+                updateSkillsDisplay('skillsOfferedDisplay', skills);
+            } else {
+                currentUser.skillsWanted = skills;
+                updateSkillsDisplay('skillsWantedDisplay', skills, true);
+            }
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            cancelEdit(section);
+        }
+
+        function saveAvailability() {
+            const status = document.getElementById('availabilityStatus').value;
+            currentUser.availability = status;
+            
+            const statusElement = document.getElementById('profileStatus');
+            if (status === 'available') {
+                statusElement.textContent = '🟢 Available for Swaps';
+                statusElement.className = 'status-badge status-available';
+            } else if (status === 'busy') {
+                statusElement.textContent = '🟡 Busy but accepting requests';
+                statusElement.className = 'status-badge status-busy';
+            } else if (status === 'limited') {
+                statusElement.textContent = '🟠 Limited availability';
+                statusElement.className = 'status-badge status-limited';
+            } else {
+                statusElement.textContent = '🔴 Currently offline';
+                statusElement.className = 'status-badge status-offline';
+            }
+            
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            cancelEdit('availability');
+        }
+
+        function saveAbout() {
+            const bio = document.getElementById('aboutText').value;
+            currentUser.bio = bio;
+            
+            document.getElementById('aboutDisplay').innerHTML = `<p class="text-white/80 leading-relaxed">${bio}</p>`;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            cancelEdit('about');
+        }
+
+        function saveAllChanges() {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            alert('All changes saved successfully!');
+        }
+
+        // Photo upload functionality
+        document.getElementById('photoUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoElement = document.getElementById('profilePhoto');
+                    const avatarElement = document.getElementById('profileAvatar');
+                    
+                    // Update both profile photo and avatar
+                    photoElement.style.backgroundImage = `url(${e.target.result})`;
+                    photoElement.style.backgroundSize = 'cover';
+                    photoElement.style.backgroundPosition = 'center';
+                    photoElement.textContent = '';
+                    
+                    avatarElement.style.backgroundImage = `url(${e.target.result})`;
+                    avatarElement.style.backgroundSize = 'cover';
+                    avatarElement.style.backgroundPosition = 'center';
+                    avatarElement.textContent = '';
+                    
+                    // Save photo data to localStorage (base64)
+                    currentUser.photoData = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Update navbar avatar if it exists
+                    const navAvatar = document.querySelector('#navAuth .w-8.h-8');
+                    if (navAvatar) {
+                        navAvatar.style.backgroundImage = `url(${e.target.result})`;
+                        navAvatar.style.backgroundSize = 'cover';
+                        navAvatar.style.backgroundPosition = 'center';
+                        navAvatar.textContent = '';
+                    }
+                    
+                    // Show success message
+                    alert('Profile photo updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
         });
+
+        // Initialize
+        checkAuthStatus();
+        loadUserProfile();
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeSwapModal();
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveAllChanges();
             }
         });
     </script>

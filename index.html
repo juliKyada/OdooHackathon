@@ -329,9 +329,8 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-4">
-                <a href="login.html" class="cyber-button text-sm">Login</a>
-                <a href="register.html" class="glass px-6 py-2 rounded-full text-white hover:bg-white hover:text-black transition-all duration-300 font-medium">Register</a>
+            <div class="flex items-center space-x-4" id="navAuth">
+                <!-- This will be populated by JavaScript -->
             </div>
         </div>
     </nav>
@@ -746,8 +745,8 @@
             cursor.style.position = 'fixed';
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
+            cursor.style.width = '30px';
+            cursor.style.height = '30px';
             cursor.style.background = 'radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%)';
             cursor.style.borderRadius = '50%';
             cursor.style.pointerEvents = 'none';
@@ -758,20 +757,6 @@
             setTimeout(() => {
                 cursor.remove();
             }, 1000);
-        });
-        
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
         });
         
         // Filter functionality
@@ -824,6 +809,61 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // User Authentication Management
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const navAuth = document.getElementById('navAuth');
+            
+            if (currentUser && currentUser.isLoggedIn) {
+                // User is logged in - show profile and logout
+                const avatarStyle = currentUser.photoData ? 
+                    `style="background-image: url(${currentUser.photoData}); background-size: cover; background-position: center;"` : '';
+                
+                navAuth.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="relative group">
+                            <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 text-white hover:text-cyan-400 transition-colors">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm" ${avatarStyle}>
+                                    ${currentUser.photoData ? '' : currentUser.avatar}
+                                </div>
+                                <span class="hidden md:block">${currentUser.firstName}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                <a href="user-profile.html" class="block px-4 py-2 text-white hover:bg-white/10 transition-colors">My Profile</a>
+                                <a href="#" class="block px-4 py-2 text-white hover:bg-white/10 transition-colors">Settings</a>
+                                <hr class="border-white/20">
+                                <button onclick="logout()" class="block w-full text-left px-4 py-2 text-red-400 hover:bg-white/10 transition-colors">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // User is not logged in - show login and register
+                navAuth.innerHTML = `
+                    <a href="login.html" class="cyber-button text-sm">Login</a>
+                    <a href="register.html" class="glass px-6 py-2 rounded-full text-white hover:bg-white hover:text-black transition-all duration-300 font-medium">Register</a>
+                `;
+            }
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('opacity-0');
+            menu.classList.toggle('invisible');
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            checkAuthStatus();
+            window.location.reload();
+        }
+
+        // Initialize auth status on page load
+        checkAuthStatus();
     </script>
 </body>
 </html> 
