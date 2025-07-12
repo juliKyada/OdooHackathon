@@ -8,6 +8,14 @@ const currentUser = {
     location: "San Francisco, CA",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
     bio: "Passionate full-stack developer with 5+ years of experience creating innovative web applications. Love learning new technologies and sharing knowledge with others. Always excited to collaborate on interesting projects!",
+    availability: {
+        weekdays: ["evening"],
+        weekends: ["all-day"]
+    },
+    privacy: {
+        profileVisible: true,
+        contactVisible: false
+    },
     skills: [
         { name: "JavaScript", level: "expert", description: "Advanced JavaScript with ES6+, React, and Node.js" },
         { name: "React", level: "advanced", description: "Building modern web applications with React ecosystem" },
@@ -16,10 +24,25 @@ const currentUser = {
         { name: "UI/UX Design", level: "intermediate", description: "Creating user-friendly interfaces" },
         { name: "Git", level: "advanced", description: "Version control and collaboration" }
     ],
+    wantedSkills: [
+        { name: "Machine Learning", priority: "high", description: "Want to learn ML for data analysis projects" },
+        { name: "Flutter", priority: "medium", description: "Interested in mobile app development" },
+        { name: "DevOps", priority: "low", description: "Learn cloud deployment and CI/CD" }
+    ],
     goals: [
         { skill: "Machine Learning", deadline: "2024-06-15", description: "Learn ML fundamentals and implement basic algorithms", progress: 30 },
         { skill: "Flutter", deadline: "2024-08-20", description: "Build cross-platform mobile applications", progress: 15 },
         { skill: "DevOps", deadline: "2024-09-30", description: "Master CI/CD and cloud deployment", progress: 45 }
+    ],
+    ratings: {
+        average: 4.8,
+        total: 30,
+        distribution: { 5: 24, 4: 5, 3: 1, 2: 0, 1: 0 }
+    },
+    feedback: [
+        { user: "Sarah Chen", rating: 5, text: "Excellent teacher! Alex explained React concepts very clearly.", time: "2 days ago" },
+        { user: "Marcus Rodriguez", rating: 4, text: "Great JavaScript knowledge and patient teaching style.", time: "1 week ago" },
+        { user: "Emma Thompson", rating: 5, text: "Amazing UI/UX insights and practical examples.", time: "2 weeks ago" }
     ],
     connections: [
         { id: 2, name: "Sarah Chen", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face", skill: "React" },
@@ -69,6 +92,9 @@ function loadProfileData() {
     // Load skills
     renderSkills();
     
+    // Load wanted skills
+    renderWantedSkills();
+    
     // Load goals
     renderGoals();
     
@@ -77,6 +103,15 @@ function loadProfileData() {
     
     // Load connections
     renderConnections();
+    
+    // Load feedback
+    renderFeedback();
+    
+    // Load privacy settings
+    loadPrivacySettings();
+    
+    // Load availability display
+    updateAvailabilityDisplay();
 }
 
 // Render skills
@@ -152,7 +187,7 @@ function createGoalElement(goal, index) {
     goalDiv.innerHTML = `
         <div class="goal-header">
             <span class="goal-skill">${goal.skill}</span>
-            <span class="goal-deadline">${daysLeft > 0 ? `${daysLeft} days` : 'Overdue'}</span>
+            <span class="goal-deadline">${daysLeft > 0 ? ${daysLeft} days : 'Overdue'}</span>
         </div>
         <p class="goal-description">${goal.description}</p>
         <div class="goal-progress">
@@ -255,20 +290,32 @@ function setupEventListeners() {
     // Add goal button
     document.getElementById('addGoalBtn').addEventListener('click', openAddGoalModal);
     
+    // Add wanted skill button
+    document.getElementById('addWantedSkillBtn').addEventListener('click', openWantedSkillModal);
+    
+    // Edit availability button
+    document.getElementById('editAvailabilityBtn').addEventListener('click', openAvailabilityModal);
+    
     // Modal close buttons
     document.getElementById('closeEditModal').addEventListener('click', closeEditProfileModal);
     document.getElementById('closeSkillModal').addEventListener('click', closeAddSkillModal);
     document.getElementById('closeGoalModal').addEventListener('click', closeAddGoalModal);
+    document.getElementById('closeWantedSkillModal').addEventListener('click', closeWantedSkillModal);
+    document.getElementById('closeAvailabilityModal').addEventListener('click', closeAvailabilityModal);
     
     // Cancel buttons
     document.getElementById('cancelEdit').addEventListener('click', closeEditProfileModal);
     document.getElementById('cancelSkill').addEventListener('click', closeAddSkillModal);
     document.getElementById('cancelGoal').addEventListener('click', closeAddGoalModal);
+    document.getElementById('cancelWantedSkill').addEventListener('click', closeWantedSkillModal);
+    document.getElementById('cancelAvailability').addEventListener('click', closeAvailabilityModal);
     
     // Save buttons
     document.getElementById('saveProfile').addEventListener('click', saveProfile);
     document.getElementById('saveSkill').addEventListener('click', saveSkill);
     document.getElementById('saveGoal').addEventListener('click', saveGoal);
+    document.getElementById('saveWantedSkill').addEventListener('click', addWantedSkill);
+    document.getElementById('saveAvailability').addEventListener('click', saveAvailability);
     
     // Close modals on outside click
     [editProfileModal, addSkillModal, addGoalModal].forEach(modal => {
@@ -375,7 +422,7 @@ function saveSkill() {
     const newSkill = {
         name: name.trim(),
         level: level,
-        description: description.trim() || `${name} skill`
+        description: description.trim() || ${name} skill
     };
     
     currentUser.skills.push(newSkill);
@@ -396,7 +443,7 @@ function editSkill(index) {
         currentUser.skills[index] = {
             name: newName.trim(),
             level: newLevel.toLowerCase(),
-            description: newDescription.trim() || `${newName} skill`
+            description: newDescription.trim() || ${newName} skill
         };
         renderSkills();
         showToast('Skill updated successfully!', 'success');
@@ -441,7 +488,7 @@ function saveGoal() {
     const newGoal = {
         skill: skill.trim(),
         deadline: deadline,
-        description: description.trim() || `Learn ${skill}`,
+        description: description.trim() || Learn ${skill},
         progress: 0
     };
     
@@ -454,7 +501,7 @@ function saveGoal() {
 
 // View connection profile
 function viewConnectionProfile(connectionId) {
-    showToast(`Viewing ${currentUser.connections.find(c => c.id === connectionId)?.name}'s profile`, 'success');
+    showToast(Viewing ${currentUser.connections.find(c => c.id === connectionId)?.name}'s profile, 'success');
     // In a real app, this would navigate to the connection's profile page
 }
 
@@ -488,7 +535,7 @@ function showToast(message, type = 'success') {
     const toastIcon = document.querySelector('.toast-icon');
     
     toastMessage.textContent = message;
-    toastElement.className = `toast ${type}`;
+    toastElement.className = toast ${type};
     
     if (type === 'success') {
         toastIcon.className = 'toast-icon fas fa-check-circle';
@@ -545,4 +592,244 @@ function createRipple(button, event) {
     setTimeout(() => {
         ripple.remove();
     }, 600);
-} 
+}
+
+// Render wanted skills
+function renderWantedSkills() {
+    const wantedSkillsGrid = document.getElementById('wantedSkillsGrid');
+    if (!wantedSkillsGrid) return;
+    
+    wantedSkillsGrid.innerHTML = '';
+    
+    currentUser.wantedSkills.forEach((skill, index) => {
+        const skillElement = createWantedSkillElement(skill, index);
+        wantedSkillsGrid.appendChild(skillElement);
+        
+        // Staggered animation
+        setTimeout(() => {
+            skillElement.style.opacity = '1';
+            skillElement.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Create wanted skill element
+function createWantedSkillElement(skill, index) {
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'wanted-skill-item';
+    skillDiv.style.opacity = '0';
+    skillDiv.style.transform = 'translateY(20px)';
+    skillDiv.style.transition = 'all 0.6s ease';
+    
+    skillDiv.innerHTML = `
+        <div class="wanted-skill-header">
+            <span class="wanted-skill-name">${skill.name}</span>
+            <span class="wanted-skill-priority ${skill.priority}">${skill.priority}</span>
+        </div>
+        <p class="wanted-skill-description">${skill.description}</p>
+        <div class="skill-actions">
+            <button class="skill-action-btn" onclick="editWantedSkill(${index})">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="skill-action-btn" onclick="deleteWantedSkill(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    return skillDiv;
+}
+
+// Render feedback
+function renderFeedback() {
+    const recentFeedback = document.getElementById('recentFeedback');
+    if (!recentFeedback) return;
+    
+    recentFeedback.innerHTML = '';
+    
+    currentUser.feedback.forEach((feedback, index) => {
+        const feedbackElement = createFeedbackElement(feedback, index);
+        recentFeedback.appendChild(feedbackElement);
+        
+        // Staggered animation
+        setTimeout(() => {
+            feedbackElement.style.opacity = '1';
+            feedbackElement.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Create feedback element
+function createFeedbackElement(feedback, index) {
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = 'feedback-item';
+    feedbackDiv.style.opacity = '0';
+    feedbackDiv.style.transform = 'translateY(20px)';
+    feedbackDiv.style.transition = 'all 0.6s ease';
+    
+    const stars = '⭐'.repeat(feedback.rating);
+    
+    feedbackDiv.innerHTML = `
+        <div class="feedback-header">
+            <span class="feedback-user">${feedback.user}</span>
+            <span class="feedback-rating">${stars}</span>
+        </div>
+        <div class="feedback-text">${feedback.text}</div>
+        <div class="feedback-time">${feedback.time}</div>
+    `;
+    
+    return feedbackDiv;
+}
+
+// Load privacy settings
+function loadPrivacySettings() {
+    const profileVisibility = document.getElementById('profileVisibility');
+    const contactVisibility = document.getElementById('contactVisibility');
+    
+    if (profileVisibility) {
+        profileVisibility.checked = currentUser.privacy.profileVisible;
+    }
+    
+    if (contactVisibility) {
+        contactVisibility.checked = currentUser.privacy.contactVisible;
+    }
+}
+
+// Edit wanted skill
+function editWantedSkill(index) {
+    const skill = currentUser.wantedSkills[index];
+    const newName = prompt('Skill name:', skill.name);
+    const newPriority = prompt('Priority (high/medium/low):', skill.priority);
+    const newDescription = prompt('Description:', skill.description);
+    
+    if (newName && newPriority) {
+        currentUser.wantedSkills[index] = {
+            name: newName.trim(),
+            priority: newPriority.toLowerCase(),
+            description: newDescription.trim() || ${newName} skill
+        };
+        renderWantedSkills();
+        showToast('Wanted skill updated successfully!', 'success');
+    }
+}
+
+// Delete wanted skill
+function deleteWantedSkill(index) {
+    if (confirm('Are you sure you want to delete this wanted skill?')) {
+        currentUser.wantedSkills.splice(index, 1);
+        renderWantedSkills();
+        showToast('Wanted skill deleted successfully!', 'success');
+    }
+}
+
+// Add wanted skill
+function addWantedSkill() {
+    const name = document.getElementById('wantedSkillName').value;
+    const priority = document.getElementById('wantedSkillPriority').value;
+    const description = document.getElementById('wantedSkillDescription').value;
+    
+    if (!name || !priority) {
+        showToast('Please fill in skill name and priority', 'error');
+        return;
+    }
+    
+    const newSkill = {
+        name: name.trim(),
+        priority: priority,
+        description: description.trim() || Want to learn ${name}
+    };
+    
+    currentUser.wantedSkills.push(newSkill);
+    renderWantedSkills();
+    
+    closeWantedSkillModal();
+    showToast('Wanted skill added successfully!', 'success');
+}
+
+// Open wanted skill modal
+function openWantedSkillModal() {
+    document.getElementById('addWantedSkillModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close wanted skill modal
+function closeWantedSkillModal() {
+    document.getElementById('addWantedSkillModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Open availability modal
+function openAvailabilityModal() {
+    document.getElementById('editAvailabilityModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    loadAvailabilitySettings();
+}
+
+// Close availability modal
+function closeAvailabilityModal() {
+    document.getElementById('editAvailabilityModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Load availability settings
+function loadAvailabilitySettings() {
+    const availability = currentUser.availability;
+    
+    document.getElementById('weekdayMorning').checked = availability.weekdays.includes('morning');
+    document.getElementById('weekdayAfternoon').checked = availability.weekdays.includes('afternoon');
+    document.getElementById('weekdayEvening').checked = availability.weekdays.includes('evening');
+    document.getElementById('weekendMorning').checked = availability.weekends.includes('morning');
+    document.getElementById('weekendAfternoon').checked = availability.weekends.includes('afternoon');
+    document.getElementById('weekendEvening').checked = availability.weekends.includes('evening');
+    document.getElementById('weekendAllDay').checked = availability.weekends.includes('all-day');
+}
+
+// Save availability
+function saveAvailability() {
+    const weekdays = [];
+    const weekends = [];
+    
+    if (document.getElementById('weekdayMorning').checked) weekdays.push('morning');
+    if (document.getElementById('weekdayAfternoon').checked) weekdays.push('afternoon');
+    if (document.getElementById('weekdayEvening').checked) weekdays.push('evening');
+    if (document.getElementById('weekendMorning').checked) weekends.push('morning');
+    if (document.getElementById('weekendAfternoon').checked) weekends.push('afternoon');
+    if (document.getElementById('weekendEvening').checked) weekends.push('evening');
+    if (document.getElementById('weekendAllDay').checked) weekends.push('all-day');
+    
+    currentUser.availability = { weekdays, weekends };
+    updateAvailabilityDisplay();
+    
+    closeAvailabilityModal();
+    showToast('Availability updated successfully!', 'success');
+}
+
+// Update availability display
+function updateAvailabilityDisplay() {
+    const availabilityGrid = document.getElementById('availabilityGrid');
+    if (!availabilityGrid) return;
+    
+    availabilityGrid.innerHTML = '';
+    
+    const availability = currentUser.availability;
+    
+    if (availability.weekdays.length > 0) {
+        const weekdayDiv = document.createElement('div');
+        weekdayDiv.className = 'availability-item';
+        weekdayDiv.innerHTML = `
+            <span class="day">Weekdays</span>
+            <span class="time">${availability.weekdays.join(', ')}</span>
+        `;
+        availabilityGrid.appendChild(weekdayDiv);
+    }
+    
+    if (availability.weekends.length > 0) {
+        const weekendDiv = document.createElement('div');
+        weekendDiv.className = 'availability-item';
+        weekendDiv.innerHTML = `
+            <span class="day">Weekends</span>
+            <span class="time">${availability.weekends.join(', ')}</span>
+        `;
+        availabilityGrid.appendChild(weekendDiv);
+    }
+}
