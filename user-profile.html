@@ -4,7 +4,7 @@ let selectedSkillsOffered = [];
 let selectedSkillsWanted = [];
 let pendingVisibility = null;
 
-// Particle System
+
 const particlesContainer = document.getElementById('particles');
 const particles = [];
 
@@ -48,7 +48,7 @@ class Particle {
     }
 }
 
-// Create particles
+
 for (let i = 0; i < 30; i++) {
     particles.push(new Particle());
 }
@@ -114,7 +114,7 @@ document.querySelectorAll('#skillsWanted .skill-option').forEach(option => {
     });
 });
 
-// Availability Time Pickers
+
 document.querySelectorAll('#availabilityOptions input[type=checkbox]').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
         const timePicker = document.getElementById(${this.dataset.id}-time);
@@ -166,7 +166,7 @@ cancelVisibility.addEventListener('click', () => {
     visibilityModal.classList.add('hidden');
 });
 
-// Form Submission
+
 const registerForm = document.getElementById('registerForm');
 const buttonText = document.getElementById('buttonText');
 const loadingSpinner = document.getElementById('loadingSpinner');
@@ -184,23 +184,23 @@ registerForm.addEventListener('submit', async function(e) {
         alert('Please select at least one skill you can offer!');
         return;
     }
-    // --- PUBLIC/PRIVATE ---
+  
     const isPublic = document.getElementById('isPublic').checked;
-    // --- AVAILABILITY ---
+   
     const availability = [];
-    // Weekends
+
     if (document.getElementById('weekendsCheck').checked) {
       document.querySelectorAll('#weekendsTimes input[type=checkbox]:checked').forEach(cb => {
         availability.push({ day: cb.dataset.day, time: cb.dataset.time });
       });
     }
-    // Weekdays
+   
     if (document.getElementById('weekdaysCheck').checked) {
       document.querySelectorAll('#weekdaysTimes input[type=checkbox]:checked').forEach(cb => {
         availability.push({ day: cb.dataset.day, time: cb.dataset.time });
       });
     }
-    // --- USER DATA ---
+   
     const userData = {
         name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
         email: document.getElementById('email').value,
