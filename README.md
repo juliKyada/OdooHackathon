@@ -5,7 +5,7 @@ This is a small project I worked on called **Skill Swap Platform** — a simple 
 
 ---
 
-## 🌱 Why I Built It
+## 🌱 Why we selected it  
 
 I’ve always liked the idea of community learning — where people help each other grow. We all have something we’re good at and something we want to learn. I built this platform to make that process easier and more structured.
 
