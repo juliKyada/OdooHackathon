@@ -1,156 +1,65 @@
 // Messages Page JavaScript
 
-// Sample conversations data
-const conversations = [
-    {
-        id: 1,
-        user: {
-            id: 2,
-            name: "Sarah Chen",
-            avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face",
-            status: "online"
-        },
-        lastMessage: "Hey! I'd love to learn React from you. Are you available this weekend?",
-        timestamp: "2 hours ago",
-        unreadCount: 2,
-        messages: [
-            {
-                id: 1,
-                sender: 2,
-                text: "Hi Alex! I saw your profile and I'm really interested in learning React.",
-                timestamp: "2024-01-15T10:30:00",
-                type: "text"
-            },
-            {
-                id: 2,
-                sender: 1,
-                text: "Hey Sarah! That's great! I'd be happy to help you learn React.",
-                timestamp: "2024-01-15T10:35:00",
-                type: "text"
-            },
-            {
-                id: 3,
-                sender: 2,
-                text: "Perfect! I can teach you UI/UX design in return. What do you think?",
-                timestamp: "2024-01-15T10:40:00",
-                type: "text"
-            },
-            {
-                id: 4,
-                sender: 1,
-                text: "That sounds like a great swap! When would you like to start?",
-                timestamp: "2024-01-15T10:45:00",
-                type: "text"
-            },
-            {
-                id: 5,
-                sender: 2,
-                text: "Hey! I'd love to learn React from you. Are you available this weekend?",
-                timestamp: "2024-01-15T12:30:00",
-                type: "text"
-            }
-        ]
-    },
-    {
-        id: 2,
-        user: {
-            id: 3,
-            name: "Marcus Rodriguez",
-            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-            status: "offline"
-        },
-        lastMessage: "Thanks for the Python tips! They were really helpful.",
-        timestamp: "1 day ago",
-        unreadCount: 0,
-        messages: [
-            {
-                id: 1,
-                sender: 3,
-                text: "Hi Alex! I'm learning Python and could use some guidance.",
-                timestamp: "2024-01-14T09:00:00",
-                type: "text"
-            },
-            {
-                id: 2,
-                sender: 1,
-                text: "Sure! I'd be happy to help. What specific areas are you struggling with?",
-                timestamp: "2024-01-14T09:05:00",
-                type: "text"
-            },
-            {
-                id: 3,
-                sender: 3,
-                text: "Thanks for the Python tips! They were really helpful.",
-                timestamp: "2024-01-14T15:30:00",
-                type: "text"
-            }
-        ]
-    },
-    {
-        id: 3,
-        user: {
-            id: 4,
-            name: "Emma Thompson",
-            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face",
-            status: "online"
-        },
-        lastMessage: "The design looks amazing! Thank you so much!",
-        timestamp: "3 days ago",
-        unreadCount: 0,
-        messages: [
-            {
-                id: 1,
-                sender: 4,
-                text: "Hi Alex! I need help with a design project. Can you assist?",
-                timestamp: "2024-01-12T14:00:00",
-                type: "text"
-            },
-            {
-                id: 2,
-                sender: 1,
-                text: "Of course! I'd love to help with your design project.",
-                timestamp: "2024-01-12T14:05:00",
-                type: "text"
-            },
-            {
-                id: 3,
-                sender: 4,
-                text: "The design looks amazing! Thank you so much!",
-                timestamp: "2024-01-12T16:30:00",
-                type: "text"
-            }
-        ]
-    }
-];
+// Get conversations from data manager
+let conversations = dataManager.getConversations();
 
-// Sample users for new chat
-const availableUsers = [
-    {
-        id: 5,
-        name: "David Kim",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face",
-        skills: ["Photography", "Videography"],
-        status: "online"
-    },
-    {
-        id: 6,
-        name: "Lisa Wang",
-        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=50&h=50&fit=crop&crop=face",
-        skills: ["Content Writing", "SEO"],
-        status: "offline"
-    },
-    {
-        id: 7,
-        name: "Alex Johnson",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face",
-        skills: ["DevOps", "AWS"],
-        status: "online"
-    }
-];
+// If no conversations exist, create some sample ones
+if (conversations.length === 0) {
+    const sampleConversations = [
+        {
+            user: {
+                id: 2,
+                name: "Sarah Chen",
+                avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face",
+                status: "online"
+            },
+            messages: [
+                { sender: 2, text: "Hi Alex! I saw your profile and I'm really interested in learning React.", timestamp: "2024-01-15T10:30:00", type: "text" },
+                { sender: 1, text: "Hey Sarah! That's great! I'd be happy to help you learn React.", timestamp: "2024-01-15T10:35:00", type: "text" },
+                { sender: 2, text: "Perfect! I can teach you UI/UX design in return. What do you think?", timestamp: "2024-01-15T10:40:00", type: "text" },
+                { sender: 1, text: "That sounds like a great swap! When would you like to start?", timestamp: "2024-01-15T10:45:00", type: "text" },
+                { sender: 2, text: "Hey! I'd love to learn React from you. Are you available this weekend?", timestamp: "2024-01-15T12:30:00", type: "text" }
+            ]
+        },
+        {
+            user: {
+                id: 3,
+                name: "Marcus Rodriguez",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
+                status: "offline"
+            },
+            messages: [
+                { sender: 3, text: "Hi Alex! I'm learning Python and could use some guidance.", timestamp: "2024-01-14T09:00:00", type: "text" },
+                { sender: 1, text: "Sure! I'd be happy to help. What specific areas are you struggling with?", timestamp: "2024-01-14T09:05:00", type: "text" },
+                { sender: 3, text: "Thanks for the Python tips! They were really helpful.", timestamp: "2024-01-14T15:30:00", type: "text" }
+            ]
+        }
+    ];
+    
+    sampleConversations.forEach(conv => {
+        dataManager.addConversation(conv);
+    });
+    
+    conversations = dataManager.getConversations();
+}
+
+// Get available users from data manager
+let availableUsers = dataManager.getUsers();
+
+// Filter out current user and users already in conversations
+function getAvailableUsers() {
+    const currentUserId = dataManager.getCurrentUser().id;
+    const existingConversationUserIds = conversations.map(c => c.user.id);
+    
+    return availableUsers.filter(user => 
+        user.id !== currentUserId && 
+        !existingConversationUserIds.includes(user.id)
+    );
+}
 
 // Current state
 let currentConversation = null;
-let currentUser = { id: 1, name: "Alex Johnson", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face" };
+let currentUser = dataManager.getCurrentUser();
 
 // DOM Elements
 const conversationsList = document.getElementById('conversationsList');
@@ -172,6 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load conversations
 function loadConversations() {
+    // Refresh conversations from data manager
+    conversations = dataManager.getConversations();
+    
     conversationsList.innerHTML = '';
     
     conversations.forEach((conversation, index) => {
@@ -286,17 +198,16 @@ function sendMessage() {
     if (!text || !currentConversation) return;
     
     const newMessage = {
-        id: Date.now(),
         sender: currentUser.id,
         text: text,
-        timestamp: new Date().toISOString(),
         type: 'text'
     };
     
-    // Add to conversation
-    currentConversation.messages.push(newMessage);
-    currentConversation.lastMessage = text;
-    currentConversation.timestamp = 'Just now';
+    // Add to data manager
+    dataManager.addMessage(currentConversation.id, newMessage);
+    
+    // Update current conversation
+    currentConversation = dataManager.getConversations().find(c => c.id === currentConversation.id);
     
     // Add to UI
     const messageElement = createMessageElement(newMessage, currentConversation.messages.length - 1);
@@ -427,7 +338,11 @@ function closeNewChatModal() {
 function loadAvailableUsers() {
     usersList.innerHTML = '';
     
-    availableUsers.forEach(user => {
+    // Refresh available users
+    availableUsers = dataManager.getUsers();
+    const filteredUsers = getAvailableUsers();
+    
+    filteredUsers.forEach(user => {
         const userElement = createUserElement(user);
         usersList.appendChild(userElement);
     });
@@ -454,17 +369,18 @@ function createUserElement(user) {
 // Start new conversation
 function startNewConversation(user) {
     const newConversation = {
-        id: Date.now(),
         user: user,
-        lastMessage: "New conversation started",
-        timestamp: "Just now",
-        unreadCount: 0,
         messages: []
     };
     
-    conversations.unshift(newConversation);
+    // Add to data manager
+    const addedConversation = dataManager.addConversation(newConversation);
+    
+    // Update conversations list
+    conversations = dataManager.getConversations();
+    
     loadConversations();
-    openConversation(newConversation);
+    openConversation(addedConversation);
     closeNewChatModal();
     
     showToast(`Started conversation with ${user.name}`, 'success');

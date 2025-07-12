@@ -83,33 +83,99 @@
             <div class="profile-grid">
                 <!-- Left Column -->
                 <div class="profile-left">
-                    <!-- About Section -->
-                    <div class="profile-card">
-                        <div class="card-header">
-                            <h3>About Me</h3>
-                            <button class="edit-btn" id="editAboutBtn">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <p id="aboutText">Passionate full-stack developer with 5+ years of experience creating innovative web applications. Love learning new technologies and sharing knowledge with others. Always excited to collaborate on interesting projects!</p>
-                        </div>
+                                    <!-- About Section -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3>About Me</h3>
+                        <button class="edit-btn" id="editAboutBtn">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </div>
+                    <div class="card-content">
+                        <p id="aboutText">Passionate full-stack developer with 5+ years of experience creating innovative web applications. Love learning new technologies and sharing knowledge with others. Always excited to collaborate on interesting projects!</p>
+                    </div>
+                </div>
 
-                    <!-- Skills Section -->
-                    <div class="profile-card">
-                        <div class="card-header">
-                            <h3>My Skills</h3>
-                            <button class="add-btn" id="addSkillBtn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <div class="skills-grid" id="skillsGrid">
-                                <!-- Skills will be populated here -->
+                <!-- Availability Section -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3>Availability</h3>
+                        <button class="edit-btn" id="editAvailabilityBtn">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="availability-grid" id="availabilityGrid">
+                            <div class="availability-item">
+                                <span class="day">Weekends</span>
+                                <span class="time">All day</span>
+                            </div>
+                            <div class="availability-item">
+                                <span class="day">Weekdays</span>
+                                <span class="time">Evenings (6-9 PM)</span>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3>Privacy Settings</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="privacy-setting">
+                            <div class="setting-info">
+                                <span>Profile Visibility</span>
+                                <p>Control who can see your profile</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="profileVisibility" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="privacy-setting">
+                            <div class="setting-info">
+                                <span>Show Contact Info</span>
+                                <p>Allow others to see your contact details</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="contactVisibility">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                                    <!-- Skills Offered Section -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3>Skills I Offer</h3>
+                        <button class="add-btn" id="addSkillBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="skills-grid" id="skillsGrid">
+                            <!-- Skills will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Wanted Section -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h3>Skills I Want to Learn</h3>
+                        <button class="add-btn" id="addWantedSkillBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="skills-grid" id="wantedSkillsGrid">
+                            <!-- Wanted skills will be populated here -->
+                        </div>
+                    </div>
+                </div>
 
                     <!-- Learning Goals -->
                     <div class="profile-card">
@@ -129,6 +195,48 @@
 
                 <!-- Right Column -->
                 <div class="profile-right">
+                    <!-- Ratings & Feedback -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <h3>Ratings & Feedback</h3>
+                            <span class="rating-score">4.8 ⭐</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="ratings-summary">
+                                <div class="rating-bars">
+                                    <div class="rating-bar">
+                                        <span>5 ⭐</span>
+                                        <div class="bar"><div class="fill" style="width: 80%"></div></div>
+                                        <span>24</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>4 ⭐</span>
+                                        <div class="bar"><div class="fill" style="width: 15%"></div></div>
+                                        <span>5</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>3 ⭐</span>
+                                        <div class="bar"><div class="fill" style="width: 3%"></div></div>
+                                        <span>1</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>2 ⭐</span>
+                                        <div class="bar"><div class="fill" style="width: 1%"></div></div>
+                                        <span>0</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>1 ⭐</span>
+                                        <div class="bar"><div class="fill" style="width: 1%"></div></div>
+                                        <span>0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="recent-feedback" id="recentFeedback">
+                                <!-- Recent feedback will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Recent Activity -->
                     <div class="profile-card">
                         <div class="card-header">
@@ -264,6 +372,96 @@
         </div>
     </div>
 
+    <!-- Add Wanted Skill Modal -->
+    <div class="modal" id="addWantedSkillModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Skill You Want to Learn</h3>
+                <button class="modal-close" id="closeWantedSkillModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addWantedSkillForm">
+                    <div class="form-group">
+                        <label for="wantedSkillName">Skill Name</label>
+                        <input type="text" id="wantedSkillName" placeholder="e.g., Photoshop, Excel, Python" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wantedSkillPriority">Priority Level</label>
+                        <select id="wantedSkillPriority" required>
+                            <option value="">Select priority</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="wantedSkillDescription">Why do you want to learn this?</label>
+                        <textarea id="wantedSkillDescription" rows="3" placeholder="Brief description of why you want to learn this skill"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelWantedSkill">Cancel</button>
+                <button class="btn-primary" id="saveWantedSkill">Add Skill</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Availability Modal -->
+    <div class="modal" id="editAvailabilityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Availability</h3>
+                <button class="modal-close" id="closeAvailabilityModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editAvailabilityForm">
+                    <div class="availability-settings">
+                        <div class="day-setting">
+                            <h4>Weekdays</h4>
+                            <div class="time-slots">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekdayMorning"> Morning (9 AM - 12 PM)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekdayAfternoon"> Afternoon (12 PM - 5 PM)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekdayEvening" checked> Evening (6 PM - 9 PM)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="day-setting">
+                            <h4>Weekends</h4>
+                            <div class="time-slots">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekendMorning"> Morning (9 AM - 12 PM)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekendAfternoon"> Afternoon (12 PM - 5 PM)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekendEvening"> Evening (6 PM - 9 PM)
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="weekendAllDay" checked> All Day
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelAvailability">Cancel</button>
+                <button class="btn-primary" id="saveAvailability">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <div class="toast-content">
@@ -272,6 +470,7 @@
         </div>
     </div>
 
+    <script src="data-manager.js"></script>
     <script src="profile.js"></script>
 </body>
 </html> 

@@ -1,94 +1,50 @@
-// Sample user data
-const users = [
-    {
-        id: 1,
-        name: "Sarah Chen",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-        skills: ["JavaScript", "React", "UI/UX Design"],
-        rating: 4.8,
-        bio: "Full-stack developer passionate about creating beautiful user experiences. Love collaborating on innovative projects!",
-        location: "San Francisco, CA",
-        availableSkills: ["JavaScript", "React", "Node.js", "UI/UX Design"],
-        learnSkills: ["Python", "Machine Learning", "DevOps"]
-    },
-    {
-        id: 2,
-        name: "Marcus Rodriguez",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        skills: ["Python", "Data Science", "Machine Learning"],
-        rating: 4.9,
-        bio: "Data scientist with 5+ years experience in ML and AI. Always excited to learn new technologies and share knowledge.",
-        location: "Austin, TX",
-        availableSkills: ["Python", "TensorFlow", "Pandas", "SQL"],
-        learnSkills: ["React", "JavaScript", "Web Development"]
-    },
-    {
-        id: 3,
-        name: "Emma Thompson",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        skills: ["Graphic Design", "Illustration", "Branding"],
-        rating: 4.7,
-        bio: "Creative designer specializing in brand identity and digital illustration. Let's create something amazing together!",
-        location: "New York, NY",
-        availableSkills: ["Adobe Creative Suite", "Illustration", "Branding", "Typography"],
-        learnSkills: ["Web Development", "Photography", "Animation"]
-    },
-    {
-        id: 4,
-        name: "David Kim",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        skills: ["Photography", "Videography", "Editing"],
-        rating: 4.6,
-        bio: "Professional photographer and videographer. Passionate about storytelling through visual media.",
-        location: "Los Angeles, CA",
-        availableSkills: ["Photography", "Video Editing", "Lightroom", "Premiere Pro"],
-        learnSkills: ["Web Design", "Marketing", "Social Media"]
-    },
-    {
-        id: 5,
-        name: "Lisa Wang",
-        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-        skills: ["Content Writing", "SEO", "Marketing"],
-        rating: 4.8,
-        bio: "Content strategist and digital marketer. Helping brands tell their stories and reach their audience.",
-        location: "Chicago, IL",
-        availableSkills: ["Content Writing", "SEO", "Social Media Marketing", "Copywriting"],
-        learnSkills: ["Graphic Design", "Video Production", "Analytics"]
-    },
-    {
-        id: 6,
-        name: "Alex Johnson",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-        skills: ["DevOps", "AWS", "Docker"],
-        rating: 4.9,
-        bio: "DevOps engineer with expertise in cloud infrastructure and automation. Always learning new technologies.",
-        location: "Seattle, WA",
-        availableSkills: ["AWS", "Docker", "Kubernetes", "Terraform"],
-        learnSkills: ["Machine Learning", "Data Science", "Mobile Development"]
-    },
-    {
-        id: 7,
-        name: "Maria Garcia",
-        avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
-        skills: ["Mobile Development", "iOS", "Swift"],
-        rating: 4.7,
-        bio: "iOS developer creating intuitive mobile experiences. Love working with new frameworks and technologies.",
-        location: "Miami, FL",
-        availableSkills: ["Swift", "iOS Development", "Xcode", "Core Data"],
-        learnSkills: ["Android Development", "Flutter", "Backend Development"]
-    },
-    {
-        id: 8,
-        name: "James Wilson",
-        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
-        skills: ["Blockchain", "Solidity", "Web3"],
-        rating: 4.5,
-        bio: "Blockchain developer and Web3 enthusiast. Building the future of decentralized applications.",
-        location: "Denver, CO",
-        availableSkills: ["Solidity", "Ethereum", "Smart Contracts", "Web3.js"],
-        learnSkills: ["AI/ML", "Game Development", "Cybersecurity"]
-    }
-];
+// Get users from data manager
+let users = dataManager.getUsers();
+
+// If no users exist, add some sample users
+if (users.length === 0) {
+    const sampleUsers = [
+        {
+            name: "Sarah Chen",
+            title: "Frontend Developer",
+            location: "San Francisco, CA",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+            skills: ["JavaScript", "React", "UI/UX Design"],
+            rating: 4.8,
+            bio: "Full-stack developer passionate about creating beautiful user experiences. Love collaborating on innovative projects!",
+            availableSkills: ["JavaScript", "React", "Node.js", "UI/UX Design"],
+            learnSkills: ["Python", "Machine Learning", "DevOps"]
+        },
+        {
+            name: "Marcus Rodriguez",
+            title: "Data Scientist",
+            location: "Austin, TX",
+            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+            skills: ["Python", "Data Science", "Machine Learning"],
+            rating: 4.9,
+            bio: "Data scientist with 5+ years experience in ML and AI. Always excited to learn new technologies and share knowledge.",
+            availableSkills: ["Python", "TensorFlow", "Pandas", "SQL"],
+            learnSkills: ["React", "JavaScript", "Web Development"]
+        },
+        {
+            name: "Emma Thompson",
+            title: "Graphic Designer",
+            location: "New York, NY",
+            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+            skills: ["Graphic Design", "Illustration", "Branding"],
+            rating: 4.7,
+            bio: "Creative designer specializing in brand identity and digital illustration. Let's create something amazing together!",
+            availableSkills: ["Adobe Creative Suite", "Illustration", "Branding", "Typography"],
+            learnSkills: ["Web Development", "Photography", "Animation"]
+        }
+    ];
+    
+    sampleUsers.forEach(user => {
+        dataManager.addUser(user);
+    });
+    
+    users = dataManager.getUsers();
+}
 
 // Current user's skills (for suggestions)
 const currentUserSkills = ["JavaScript", "React", "Node.js", "UI/UX Design"];
@@ -149,6 +105,9 @@ function setupEventListeners() {
 
 // Render user cards
 function renderUserCards() {
+    // Refresh users from data manager
+    users = dataManager.getUsers();
+    
     const startIndex = currentPage * usersPerPage;
     const endIndex = startIndex + usersPerPage;
     const usersToShow = filteredUsers.slice(startIndex, endIndex);
@@ -202,6 +161,10 @@ function createUserCard(user, index) {
             <button class="btn btn-secondary" onclick="viewProfile(${user.id})">
                 <i class="fas fa-eye"></i>
                 View
+            </button>
+            <button class="btn btn-rating" onclick="openRatingModal(${user.id})">
+                <i class="fas fa-star"></i>
+                Rate
             </button>
         </div>
     `;
@@ -303,6 +266,9 @@ function generateSuggestions() {
 
 // Filter users
 function filterUsers() {
+    // Refresh users from data manager
+    users = dataManager.getUsers();
+    
     const skillFilterValue = skillFilter.value;
     const sortFilterValue = sortFilter.value;
     
@@ -405,6 +371,104 @@ function handleSendRequest() {
         showToast('Skill swap request sent successfully!', 'success');
         closeRequestModal();
     }, 1000);
+}
+
+// Rate user
+function rateUser(userId, rating) {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+    
+    // Add feedback to user
+    const currentUser = dataManager.getCurrentUser();
+    const feedback = {
+        user: currentUser.name || 'Anonymous',
+        rating: rating,
+        text: `Rated ${rating} stars`,
+        time: new Date().toLocaleString()
+    };
+    
+    // Update user's ratings in data manager
+    const updatedUser = dataManager.updateUser(userId, {
+        ...user,
+        feedback: [...(user.feedback || []), feedback]
+    });
+    
+    // Update ratings
+    const allRatings = updatedUser.feedback.map(f => f.rating);
+    const averageRating = allRatings.reduce((a, b) => a + b, 0) / allRatings.length;
+    
+    dataManager.updateUser(userId, {
+        ...updatedUser,
+        rating: Math.round(averageRating * 10) / 10
+    });
+    
+    // Refresh users
+    users = dataManager.getUsers();
+    
+    showToast(`Rated ${user.name} ${rating} stars!`, 'success');
+    
+    // Close rating modal if open
+    const ratingModal = document.getElementById('ratingModal');
+    if (ratingModal) {
+        ratingModal.classList.remove('active');
+    }
+}
+
+// Open rating modal
+function openRatingModal(userId) {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+    
+    // Create rating modal if it doesn't exist
+    let ratingModal = document.getElementById('ratingModal');
+    if (!ratingModal) {
+        ratingModal = document.createElement('div');
+        ratingModal.id = 'ratingModal';
+        ratingModal.className = 'modal';
+        ratingModal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Rate User</h3>
+                    <button class="close-btn" onclick="closeRatingModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="user-info">
+                        <img id="ratingUserAvatar" src="" alt="" class="user-avatar">
+                        <h4 id="ratingUserName"></h4>
+                    </div>
+                    <div class="rating-stars">
+                        <span class="star" onclick="rateUser(currentRatingUserId, 1)">☆</span>
+                        <span class="star" onclick="rateUser(currentRatingUserId, 2)">☆</span>
+                        <span class="star" onclick="rateUser(currentRatingUserId, 3)">☆</span>
+                        <span class="star" onclick="rateUser(currentRatingUserId, 4)">☆</span>
+                        <span class="star" onclick="rateUser(currentRatingUserId, 5)">☆</span>
+                    </div>
+                    <p>Click on a star to rate this user</p>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(ratingModal);
+    }
+    
+    // Populate modal
+    document.getElementById('ratingUserAvatar').src = user.avatar;
+    document.getElementById('ratingUserName').textContent = user.name;
+    
+    // Store current user ID for rating
+    window.currentRatingUserId = userId;
+    
+    // Show modal
+    ratingModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close rating modal
+function closeRatingModal() {
+    const ratingModal = document.getElementById('ratingModal');
+    if (ratingModal) {
+        ratingModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
 }
 
 // Show toast notification

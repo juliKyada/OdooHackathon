@@ -1,149 +1,66 @@
 // Notifications Page JavaScript
 
-// Sample notifications data
-const notifications = [
-    {
-        id: 1,
-        type: 'request',
-        title: 'New Skill Swap Request',
-        text: 'Sarah Chen wants to swap React skills with your UI/UX Design expertise',
-        timestamp: '2 hours ago',
-        read: false,
-        user: {
-            name: 'Sarah Chen',
-            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face'
+// Get notifications from data manager
+let notifications = dataManager.getNotifications();
+
+// If no notifications exist, create some sample ones
+if (notifications.length === 0) {
+    const sampleNotifications = [
+        {
+            type: 'request',
+            title: 'New Skill Swap Request',
+            text: 'Sarah Chen wants to swap React skills with your UI/UX Design expertise',
+            user: {
+                name: 'Sarah Chen',
+                avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face'
+            },
+            actions: ['Accept', 'Decline', 'Message']
         },
-        actions: ['Accept', 'Decline', 'Message']
-    },
-    {
-        id: 2,
-        type: 'message',
-        title: 'New Message from Marcus',
-        text: 'Marcus Rodriguez sent you a message about Python learning',
-        timestamp: '4 hours ago',
-        read: false,
-        user: {
-            name: 'Marcus Rodriguez',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face'
+        {
+            type: 'message',
+            title: 'New Message from Marcus',
+            text: 'Marcus Rodriguez sent you a message about Python learning',
+            user: {
+                name: 'Marcus Rodriguez',
+                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face'
+            },
+            actions: ['Reply', 'View Chat']
         },
-        actions: ['Reply', 'View Chat']
-    },
-    {
-        id: 3,
-        type: 'connection',
-        title: 'New Connection',
-        text: 'Emma Thompson accepted your connection request',
-        timestamp: '1 day ago',
-        read: false,
-        user: {
-            name: 'Emma Thompson',
-            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face'
+        {
+            type: 'connection',
+            title: 'New Connection',
+            text: 'Emma Thompson accepted your connection request',
+            user: {
+                name: 'Emma Thompson',
+                avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face'
+            },
+            actions: ['View Profile', 'Message']
         },
-        actions: ['View Profile', 'Message']
-    },
-    {
-        id: 4,
-        type: 'skill',
-        title: 'Skill Achievement Unlocked',
-        text: 'Congratulations! You\'ve completed the React Fundamentals course',
-        timestamp: '2 days ago',
-        read: true,
-        user: null,
-        actions: ['View Certificate', 'Share']
-    },
-    {
-        id: 5,
-        type: 'request',
-        title: 'Skill Swap Request Accepted',
-        text: 'David Kim accepted your skill swap proposal for Photography ↔ JavaScript',
-        timestamp: '3 days ago',
-        read: true,
-        user: {
-            name: 'David Kim',
-            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'
+        {
+            type: 'skill',
+            title: 'Skill Achievement Unlocked',
+            text: 'Congratulations! You\'ve completed the React Fundamentals course',
+            user: null,
+            actions: ['View Certificate', 'Share']
         },
-        actions: ['Schedule Session', 'Message']
-    },
-    {
-        id: 6,
-        type: 'message',
-        title: 'Group Message',
-        text: 'New message in "Design Enthusiasts" group',
-        timestamp: '4 days ago',
-        read: true,
-        user: null,
-        actions: ['View Group', 'Mute']
-    },
-    {
-        id: 7,
-        type: 'connection',
-        title: 'Connection Request',
-        text: 'Lisa Wang sent you a connection request',
-        timestamp: '5 days ago',
-        read: true,
-        user: {
-            name: 'Lisa Wang',
-            avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face'
-        },
-        actions: ['Accept', 'Decline', 'View Profile']
-    },
-    {
-        id: 8,
-        type: 'skill',
-        title: 'Skill Recommendation',
-        text: 'Based on your profile, we recommend learning Machine Learning',
-        timestamp: '1 week ago',
-        read: true,
-        user: null,
-        actions: ['Learn More', 'Dismiss']
-    },
-    {
-        id: 9,
-        type: 'message',
-        title: 'New Message from Alex',
-        text: 'Alex Johnson sent you a message about DevOps collaboration',
-        timestamp: '1 week ago',
-        read: true,
-        user: {
-            name: 'Alex Johnson',
-            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face'
-        },
-        actions: ['Reply', 'View Chat']
-    },
-    {
-        id: 10,
-        type: 'request',
-        title: 'Skill Swap Completed',
-        text: 'Your skill swap session with Maria Garcia has been completed',
-        timestamp: '1 week ago',
-        read: true,
-        user: {
-            name: 'Maria Garcia',
-            avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=40&h=40&fit=crop&crop=face'
-        },
-        actions: ['Rate Session', 'Leave Review']
-    },
-    {
-        id: 11,
-        type: 'skill',
-        title: 'New Skill Available',
-        text: 'Blockchain Development course is now available for you',
-        timestamp: '2 weeks ago',
-        read: true,
-        user: null,
-        actions: ['Enroll Now', 'Learn More']
-    },
-    {
-        id: 12,
-        type: 'message',
-        title: 'System Message',
-        text: 'Welcome to Skillswap! Complete your profile to get started',
-        timestamp: '2 weeks ago',
-        read: true,
-        user: null,
-        actions: ['Complete Profile', 'Dismiss']
-    }
-];
+        {
+            type: 'request',
+            title: 'Skill Swap Request Accepted',
+            text: 'David Kim accepted your skill swap proposal for Photography ↔ JavaScript',
+            user: {
+                name: 'David Kim',
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face'
+            },
+            actions: ['Schedule Session', 'Message']
+        }
+    ];
+    
+    sampleNotifications.forEach(notification => {
+        dataManager.addNotification(notification);
+    });
+    
+    notifications = dataManager.getNotifications();
+}
 
 // Current state
 let currentFilter = 'all';

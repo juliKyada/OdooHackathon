@@ -1,46 +1,45 @@
 // Profile Page JavaScript
 
-// Sample user data
-const currentUser = {
-    id: 1,
-    name: "Alex Johnson",
-    title: "Full Stack Developer",
-    location: "San Francisco, CA",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
-    bio: "Passionate full-stack developer with 5+ years of experience creating innovative web applications. Love learning new technologies and sharing knowledge with others. Always excited to collaborate on interesting projects!",
-    skills: [
-        { name: "JavaScript", level: "expert", description: "Advanced JavaScript with ES6+, React, and Node.js" },
-        { name: "React", level: "advanced", description: "Building modern web applications with React ecosystem" },
-        { name: "Node.js", level: "advanced", description: "Server-side development and API creation" },
-        { name: "Python", level: "intermediate", description: "Data analysis and backend development" },
-        { name: "UI/UX Design", level: "intermediate", description: "Creating user-friendly interfaces" },
-        { name: "Git", level: "advanced", description: "Version control and collaboration" }
-    ],
-    goals: [
-        { skill: "Machine Learning", deadline: "2024-06-15", description: "Learn ML fundamentals and implement basic algorithms", progress: 30 },
-        { skill: "Flutter", deadline: "2024-08-20", description: "Build cross-platform mobile applications", progress: 15 },
-        { skill: "DevOps", deadline: "2024-09-30", description: "Master CI/CD and cloud deployment", progress: 45 }
-    ],
-    connections: [
-        { id: 2, name: "Sarah Chen", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face", skill: "React" },
-        { id: 3, name: "Marcus Rodriguez", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face", skill: "Python" },
-        { id: 4, name: "Emma Thompson", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face", skill: "Design" },
-        { id: 5, name: "David Kim", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face", skill: "Photography" },
-        { id: 6, name: "Lisa Wang", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=face", skill: "Marketing" },
-        { id: 7, name: "Maria Garcia", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=60&h=60&fit=crop&crop=face", skill: "iOS" }
-    ],
-    activities: [
-        { type: "connection", text: "Connected with Sarah Chen", time: "2 hours ago", icon: "fas fa-user-plus" },
-        { type: "skill", text: "Added new skill: Machine Learning", time: "1 day ago", icon: "fas fa-plus-circle" },
-        { type: "message", text: "Received skill swap request from Marcus", time: "2 days ago", icon: "fas fa-envelope" },
-        { type: "connection", text: "Completed skill swap with Emma", time: "3 days ago", icon: "fas fa-handshake" },
-        { type: "skill", text: "Updated proficiency in React", time: "1 week ago", icon: "fas fa-edit" }
-    ]
-};
+// Get current user from data manager
+let currentUser = dataManager.getCurrentUser();
+
+// If no user exists, create a default one
+if (!currentUser || !currentUser.name) {
+    currentUser = {
+        id: 1,
+        name: "",
+        title: "",
+        location: "",
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face",
+        bio: "",
+        availability: {
+            weekdays: [],
+            weekends: []
+        },
+        privacy: {
+            profileVisible: true,
+            contactVisible: false
+        },
+        skills: [],
+        wantedSkills: [],
+        goals: [],
+        ratings: {
+            average: 0,
+            total: 0,
+            distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+        },
+        feedback: [],
+        connections: [],
+        activities: []
+    };
+    dataManager.updateCurrentUser(currentUser);
+}
 
 // DOM Elements
 const profileImage = document.getElementById('profileImage');
 const profileName = document.getElementById('profileName');
+const profileTitle = document.querySelector('.profile-title');
+const profileLocation = document.querySelector('.profile-location');
 const aboutText = document.getElementById('aboutText');
 const skillsGrid = document.getElementById('skillsGrid');
 const goalsList = document.getElementById('goalsList');
@@ -52,22 +51,39 @@ const avatarInput = document.getElementById('avatarInput');
 const editProfileModal = document.getElementById('editProfileModal');
 const addSkillModal = document.getElementById('addSkillModal');
 const addGoalModal = document.getElementById('addGoalModal');
+const addWantedSkillModal = document.getElementById('addWantedSkillModal');
+const editAvailabilityModal = document.getElementById('editAvailabilityModal');
 
 // Initialize the profile page
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Profile page loaded');
     loadProfileData();
     setupEventListeners();
     setupAnimations();
+    console.log('Profile page initialization complete');
 });
 
 // Load profile data
 function loadProfileData() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
     // Load user info
-    profileName.textContent = currentUser.name;
-    aboutText.textContent = currentUser.bio;
+    profileName.textContent = currentUser.name || 'Your Name';
+    if (profileTitle) profileTitle.textContent = currentUser.title || 'Your Title';
+    if (profileLocation) profileLocation.textContent = currentUser.location || 'Your Location';
+    aboutText.textContent = currentUser.bio || 'Tell us about yourself...';
+    
+    // Update avatar
+    if (currentUser.avatar) {
+        profileImage.src = currentUser.avatar;
+    }
     
     // Load skills
     renderSkills();
+    
+    // Load wanted skills
+    renderWantedSkills();
     
     // Load goals
     renderGoals();
@@ -77,10 +93,22 @@ function loadProfileData() {
     
     // Load connections
     renderConnections();
+    
+    // Load feedback
+    renderFeedback();
+    
+    // Load privacy settings
+    loadPrivacySettings();
+    
+    // Load availability display
+    updateAvailabilityDisplay();
 }
 
 // Render skills
 function renderSkills() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
     skillsGrid.innerHTML = '';
     
     currentUser.skills.forEach((skill, index) => {
@@ -124,6 +152,9 @@ function createSkillElement(skill, index) {
 
 // Render goals
 function renderGoals() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
     goalsList.innerHTML = '';
     
     currentUser.goals.forEach((goal, index) => {
@@ -167,6 +198,9 @@ function createGoalElement(goal, index) {
 
 // Render activities
 function renderActivities() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
     activityList.innerHTML = '';
     
     currentUser.activities.forEach((activity, index) => {
@@ -204,6 +238,9 @@ function createActivityElement(activity, index) {
 
 // Render connections
 function renderConnections() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
     connectionsGrid.innerHTML = '';
     
     currentUser.connections.forEach((connection, index) => {
@@ -240,43 +277,135 @@ function createConnectionElement(connection, index) {
 function setupEventListeners() {
     // Avatar upload
     const avatarEdit = document.querySelector('.avatar-edit');
-    avatarEdit.addEventListener('click', () => avatarInput.click());
-    avatarInput.addEventListener('change', handleAvatarUpload);
+    if (avatarEdit && avatarInput) {
+        avatarEdit.addEventListener('click', () => avatarInput.click());
+        avatarInput.addEventListener('change', handleAvatarUpload);
+    }
     
     // Edit profile button
-    document.getElementById('editProfileBtn').addEventListener('click', openEditProfileModal);
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', openEditProfileModal);
+    }
     
     // Edit about button
-    document.getElementById('editAboutBtn').addEventListener('click', editAbout);
+    const editAboutBtn = document.getElementById('editAboutBtn');
+    if (editAboutBtn) {
+        editAboutBtn.addEventListener('click', editAbout);
+    }
     
     // Add skill button
-    document.getElementById('addSkillBtn').addEventListener('click', openAddSkillModal);
+    const addSkillBtn = document.getElementById('addSkillBtn');
+    if (addSkillBtn) {
+        addSkillBtn.addEventListener('click', openAddSkillModal);
+    }
     
     // Add goal button
-    document.getElementById('addGoalBtn').addEventListener('click', openAddGoalModal);
+    const addGoalBtn = document.getElementById('addGoalBtn');
+    if (addGoalBtn) {
+        addGoalBtn.addEventListener('click', openAddGoalModal);
+    }
+    
+    // Add wanted skill button
+    const addWantedSkillBtn = document.getElementById('addWantedSkillBtn');
+    if (addWantedSkillBtn) {
+        addWantedSkillBtn.addEventListener('click', openWantedSkillModal);
+    }
+    
+    // Edit availability button
+    const editAvailabilityBtn = document.getElementById('editAvailabilityBtn');
+    if (editAvailabilityBtn) {
+        editAvailabilityBtn.addEventListener('click', openAvailabilityModal);
+    }
     
     // Modal close buttons
-    document.getElementById('closeEditModal').addEventListener('click', closeEditProfileModal);
-    document.getElementById('closeSkillModal').addEventListener('click', closeAddSkillModal);
-    document.getElementById('closeGoalModal').addEventListener('click', closeAddGoalModal);
+    const closeEditModal = document.getElementById('closeEditModal');
+    if (closeEditModal) {
+        closeEditModal.addEventListener('click', closeEditProfileModal);
+    }
+    
+    const closeSkillModal = document.getElementById('closeSkillModal');
+    if (closeSkillModal) {
+        closeSkillModal.addEventListener('click', closeAddSkillModal);
+    }
+    
+    const closeGoalModal = document.getElementById('closeGoalModal');
+    if (closeGoalModal) {
+        closeGoalModal.addEventListener('click', closeAddGoalModal);
+    }
+    
+    const closeWantedSkillModal = document.getElementById('closeWantedSkillModal');
+    if (closeWantedSkillModal) {
+        closeWantedSkillModal.addEventListener('click', closeWantedSkillModal);
+    }
+    
+    const closeAvailabilityModal = document.getElementById('closeAvailabilityModal');
+    if (closeAvailabilityModal) {
+        closeAvailabilityModal.addEventListener('click', closeAvailabilityModal);
+    }
     
     // Cancel buttons
-    document.getElementById('cancelEdit').addEventListener('click', closeEditProfileModal);
-    document.getElementById('cancelSkill').addEventListener('click', closeAddSkillModal);
-    document.getElementById('cancelGoal').addEventListener('click', closeAddGoalModal);
+    const cancelEdit = document.getElementById('cancelEdit');
+    if (cancelEdit) {
+        cancelEdit.addEventListener('click', closeEditProfileModal);
+    }
+    
+    const cancelSkill = document.getElementById('cancelSkill');
+    if (cancelSkill) {
+        cancelSkill.addEventListener('click', closeAddSkillModal);
+    }
+    
+    const cancelGoal = document.getElementById('cancelGoal');
+    if (cancelGoal) {
+        cancelGoal.addEventListener('click', closeAddGoalModal);
+    }
+    
+    const cancelWantedSkill = document.getElementById('cancelWantedSkill');
+    if (cancelWantedSkill) {
+        cancelWantedSkill.addEventListener('click', closeWantedSkillModal);
+    }
+    
+    const cancelAvailability = document.getElementById('cancelAvailability');
+    if (cancelAvailability) {
+        cancelAvailability.addEventListener('click', closeAvailabilityModal);
+    }
     
     // Save buttons
-    document.getElementById('saveProfile').addEventListener('click', saveProfile);
-    document.getElementById('saveSkill').addEventListener('click', saveSkill);
-    document.getElementById('saveGoal').addEventListener('click', saveGoal);
+    const saveProfileBtn = document.getElementById('saveProfile');
+    if (saveProfileBtn) {
+        saveProfileBtn.addEventListener('click', saveProfile);
+    }
+    
+    const saveSkillBtn = document.getElementById('saveSkill');
+    if (saveSkillBtn) {
+        saveSkillBtn.addEventListener('click', saveSkill);
+    }
+    
+    const saveGoalBtn = document.getElementById('saveGoal');
+    if (saveGoalBtn) {
+        saveGoalBtn.addEventListener('click', saveGoal);
+    }
+    
+    const saveWantedSkillBtn = document.getElementById('saveWantedSkill');
+    if (saveWantedSkillBtn) {
+        saveWantedSkillBtn.addEventListener('click', addWantedSkill);
+    }
+    
+    const saveAvailabilityBtn = document.getElementById('saveAvailability');
+    if (saveAvailabilityBtn) {
+        saveAvailabilityBtn.addEventListener('click', saveAvailability);
+    }
     
     // Close modals on outside click
-    [editProfileModal, addSkillModal, addGoalModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
+    [editProfileModal, addSkillModal, addGoalModal, addWantedSkillModal, editAvailabilityModal].forEach(modal => {
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
     });
 }
 
@@ -286,8 +415,25 @@ function handleAvatarUpload(event) {
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            profileImage.src = e.target.result;
-            currentUser.avatar = e.target.result;
+            const avatarUrl = e.target.result;
+            profileImage.src = avatarUrl;
+            
+            // Update in data manager
+            dataManager.updateCurrentUser({
+                ...currentUser,
+                avatar: avatarUrl
+            });
+            
+            // Update current user
+            currentUser = dataManager.getCurrentUser();
+            
+            // Add activity
+            dataManager.addActivity({
+                type: "profile",
+                text: "Updated profile picture",
+                icon: "fas fa-camera"
+            });
+            
             showToast('Profile picture updated successfully!', 'success');
         };
         reader.readAsDataURL(file);
@@ -296,6 +442,7 @@ function handleAvatarUpload(event) {
 
 // Open edit profile modal
 function openEditProfileModal() {
+    console.log('Opening edit profile modal');
     document.getElementById('editName').value = currentUser.name;
     document.getElementById('editTitle').value = currentUser.title;
     document.getElementById('editLocation').value = currentUser.location;
@@ -328,9 +475,21 @@ function saveProfile() {
     currentUser.location = location;
     currentUser.bio = bio;
     
+    // Save to data manager
+    dataManager.updateCurrentUser(currentUser);
+    
     // Update UI
     profileName.textContent = name;
+    if (profileTitle) profileTitle.textContent = title;
+    if (profileLocation) profileLocation.textContent = location;
     aboutText.textContent = bio;
+    
+    // Add activity
+    dataManager.addActivity({
+        type: "profile",
+        text: "Updated profile information",
+        icon: "fas fa-edit"
+    });
     
     closeEditProfileModal();
     showToast('Profile updated successfully!', 'success');
@@ -340,14 +499,32 @@ function saveProfile() {
 function editAbout() {
     const newBio = prompt('Update your bio:', currentUser.bio);
     if (newBio && newBio.trim()) {
-        currentUser.bio = newBio.trim();
+        // Update in data manager
+        dataManager.updateCurrentUser({
+            ...currentUser,
+            bio: newBio.trim()
+        });
+        
+        // Update current user
+        currentUser = dataManager.getCurrentUser();
+        
+        // Update UI
         aboutText.textContent = newBio.trim();
+        
+        // Add activity
+        dataManager.addActivity({
+            type: "profile",
+            text: "Updated bio",
+            icon: "fas fa-edit"
+        });
+        
         showToast('Bio updated successfully!', 'success');
     }
 }
 
 // Open add skill modal
 function openAddSkillModal() {
+    console.log('Opening add skill modal');
     document.getElementById('skillName').value = '';
     document.getElementById('skillLevel').value = '';
     document.getElementById('skillDescription').value = '';
@@ -378,11 +555,27 @@ function saveSkill() {
         description: description.trim() || `${name} skill`
     };
     
-    currentUser.skills.push(newSkill);
-    renderSkills();
+    // Add to data manager
+    dataManager.addSkill(newSkill);
     
+    // Update current user
+    currentUser = dataManager.getCurrentUser();
+    
+    // Add activity
+    dataManager.addActivity({
+        type: "skill",
+        text: `Added new skill: ${name}`,
+        icon: "fas fa-plus-circle"
+    });
+    
+    renderSkills();
     closeAddSkillModal();
     showToast('Skill added successfully!', 'success');
+    
+    // Clear form
+    document.getElementById('skillName').value = '';
+    document.getElementById('skillLevel').value = '';
+    document.getElementById('skillDescription').value = '';
 }
 
 // Edit skill
@@ -393,11 +586,25 @@ function editSkill(index) {
     const newDescription = prompt('Description:', skill.description);
     
     if (newName && newLevel) {
-        currentUser.skills[index] = {
+        const updatedSkill = {
             name: newName.trim(),
             level: newLevel.toLowerCase(),
             description: newDescription.trim() || `${newName} skill`
         };
+        
+        // Update in data manager
+        dataManager.updateSkill(skill.id, updatedSkill);
+        
+        // Update current user
+        currentUser = dataManager.getCurrentUser();
+        
+        // Add activity
+        dataManager.addActivity({
+            type: "skill",
+            text: `Updated skill: ${newName}`,
+            icon: "fas fa-edit"
+        });
+        
         renderSkills();
         showToast('Skill updated successfully!', 'success');
     }
@@ -406,7 +613,22 @@ function editSkill(index) {
 // Delete skill
 function deleteSkill(index) {
     if (confirm('Are you sure you want to delete this skill?')) {
-        currentUser.skills.splice(index, 1);
+        const skill = currentUser.skills[index];
+        const skillName = skill.name;
+        
+        // Delete from data manager
+        dataManager.deleteSkill(skill.id);
+        
+        // Update current user
+        currentUser = dataManager.getCurrentUser();
+        
+        // Add activity
+        dataManager.addActivity({
+            type: "skill",
+            text: `Deleted skill: ${skillName}`,
+            icon: "fas fa-trash"
+        });
+        
         renderSkills();
         showToast('Skill deleted successfully!', 'success');
     }
@@ -445,11 +667,27 @@ function saveGoal() {
         progress: 0
     };
     
-    currentUser.goals.push(newGoal);
-    renderGoals();
+    // Add to data manager
+    dataManager.addGoal(newGoal);
     
+    // Update current user
+    currentUser = dataManager.getCurrentUser();
+    
+    // Add activity
+    dataManager.addActivity({
+        type: "goal",
+        text: `Added new goal: ${skill}`,
+        icon: "fas fa-target"
+    });
+    
+    renderGoals();
     closeAddGoalModal();
     showToast('Learning goal added successfully!', 'success');
+    
+    // Clear form
+    document.getElementById('goalSkill').value = '';
+    document.getElementById('goalDeadline').value = '';
+    document.getElementById('goalDescription').value = '';
 }
 
 // View connection profile
@@ -545,4 +783,309 @@ function createRipple(button, event) {
     setTimeout(() => {
         ripple.remove();
     }, 600);
+}
+
+// Render wanted skills
+function renderWantedSkills() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
+    const wantedSkillsGrid = document.getElementById('wantedSkillsGrid');
+    if (!wantedSkillsGrid) return;
+    
+    wantedSkillsGrid.innerHTML = '';
+    
+    currentUser.wantedSkills.forEach((skill, index) => {
+        const skillElement = createWantedSkillElement(skill, index);
+        wantedSkillsGrid.appendChild(skillElement);
+        
+        // Staggered animation
+        setTimeout(() => {
+            skillElement.style.opacity = '1';
+            skillElement.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Create wanted skill element
+function createWantedSkillElement(skill, index) {
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'wanted-skill-item';
+    skillDiv.style.opacity = '0';
+    skillDiv.style.transform = 'translateY(20px)';
+    skillDiv.style.transition = 'all 0.6s ease';
+    
+    skillDiv.innerHTML = `
+        <div class="wanted-skill-header">
+            <span class="wanted-skill-name">${skill.name}</span>
+            <span class="wanted-skill-priority ${skill.priority}">${skill.priority}</span>
+        </div>
+        <p class="wanted-skill-description">${skill.description}</p>
+        <div class="skill-actions">
+            <button class="skill-action-btn" onclick="editWantedSkill(${index})">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="skill-action-btn" onclick="deleteWantedSkill(${index})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    return skillDiv;
+}
+
+// Render feedback
+function renderFeedback() {
+    // Refresh current user from data manager
+    currentUser = dataManager.getCurrentUser();
+    
+    const recentFeedback = document.getElementById('recentFeedback');
+    if (!recentFeedback) return;
+    
+    recentFeedback.innerHTML = '';
+    
+    currentUser.feedback.forEach((feedback, index) => {
+        const feedbackElement = createFeedbackElement(feedback, index);
+        recentFeedback.appendChild(feedbackElement);
+        
+        // Staggered animation
+        setTimeout(() => {
+            feedbackElement.style.opacity = '1';
+            feedbackElement.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Create feedback element
+function createFeedbackElement(feedback, index) {
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = 'feedback-item';
+    feedbackDiv.style.opacity = '0';
+    feedbackDiv.style.transform = 'translateY(20px)';
+    feedbackDiv.style.transition = 'all 0.6s ease';
+    
+    const stars = '⭐'.repeat(feedback.rating);
+    
+    feedbackDiv.innerHTML = `
+        <div class="feedback-header">
+            <span class="feedback-user">${feedback.user}</span>
+            <span class="feedback-rating">${stars}</span>
+        </div>
+        <div class="feedback-text">${feedback.text}</div>
+        <div class="feedback-time">${feedback.time}</div>
+    `;
+    
+    return feedbackDiv;
+}
+
+// Load privacy settings
+function loadPrivacySettings() {
+    const profileVisibility = document.getElementById('profileVisibility');
+    const contactVisibility = document.getElementById('contactVisibility');
+    
+    if (profileVisibility) {
+        profileVisibility.checked = currentUser.privacy.profileVisible;
+    }
+    
+    if (contactVisibility) {
+        contactVisibility.checked = currentUser.privacy.contactVisible;
+    }
+}
+
+// Edit wanted skill
+function editWantedSkill(index) {
+    const skill = currentUser.wantedSkills[index];
+    const newName = prompt('Skill name:', skill.name);
+    const newPriority = prompt('Priority (high/medium/low):', skill.priority);
+    const newDescription = prompt('Description:', skill.description);
+    
+    if (newName && newPriority) {
+        const updatedSkill = {
+            name: newName.trim(),
+            priority: newPriority.toLowerCase(),
+            description: newDescription.trim() || `${newName} skill`
+        };
+        
+        // Update in data manager
+        dataManager.updateWantedSkill(skill.id, updatedSkill);
+        
+        // Update current user
+        currentUser = dataManager.getCurrentUser();
+        
+        // Add activity
+        dataManager.addActivity({
+            type: "skill",
+            text: `Updated wanted skill: ${newName}`,
+            icon: "fas fa-edit"
+        });
+        
+        renderWantedSkills();
+        showToast('Wanted skill updated successfully!', 'success');
+    }
+}
+
+// Delete wanted skill
+function deleteWantedSkill(index) {
+    if (confirm('Are you sure you want to delete this wanted skill?')) {
+        const skill = currentUser.wantedSkills[index];
+        const skillName = skill.name;
+        
+        // Delete from data manager
+        dataManager.deleteWantedSkill(skill.id);
+        
+        // Update current user
+        currentUser = dataManager.getCurrentUser();
+        
+        // Add activity
+        dataManager.addActivity({
+            type: "skill",
+            text: `Deleted wanted skill: ${skillName}`,
+            icon: "fas fa-trash"
+        });
+        
+        renderWantedSkills();
+        showToast('Wanted skill deleted successfully!', 'success');
+    }
+}
+
+// Add wanted skill
+function addWantedSkill() {
+    const name = document.getElementById('wantedSkillName').value;
+    const priority = document.getElementById('wantedSkillPriority').value;
+    const description = document.getElementById('wantedSkillDescription').value;
+    
+    if (!name || !priority) {
+        showToast('Please fill in skill name and priority', 'error');
+        return;
+    }
+    
+    const newSkill = {
+        name: name.trim(),
+        priority: priority,
+        description: description.trim() || `Want to learn ${name}`
+    };
+    
+    // Add to data manager
+    dataManager.addWantedSkill(newSkill);
+    
+    // Update current user
+    currentUser = dataManager.getCurrentUser();
+    
+    // Add activity
+    dataManager.addActivity({
+        type: "skill",
+        text: `Added wanted skill: ${name}`,
+        icon: "fas fa-heart"
+    });
+    
+    renderWantedSkills();
+    closeWantedSkillModal();
+    showToast('Wanted skill added successfully!', 'success');
+    
+    // Clear form
+    document.getElementById('wantedSkillName').value = '';
+    document.getElementById('wantedSkillPriority').value = '';
+    document.getElementById('wantedSkillDescription').value = '';
+}
+
+// Open wanted skill modal
+function openWantedSkillModal() {
+    document.getElementById('addWantedSkillModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close wanted skill modal
+function closeWantedSkillModal() {
+    document.getElementById('addWantedSkillModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Open availability modal
+function openAvailabilityModal() {
+    document.getElementById('editAvailabilityModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    loadAvailabilitySettings();
+}
+
+// Close availability modal
+function closeAvailabilityModal() {
+    document.getElementById('editAvailabilityModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Load availability settings
+function loadAvailabilitySettings() {
+    const availability = currentUser.availability;
+    
+    document.getElementById('weekdayMorning').checked = availability.weekdays.includes('morning');
+    document.getElementById('weekdayAfternoon').checked = availability.weekdays.includes('afternoon');
+    document.getElementById('weekdayEvening').checked = availability.weekdays.includes('evening');
+    document.getElementById('weekendMorning').checked = availability.weekends.includes('morning');
+    document.getElementById('weekendAfternoon').checked = availability.weekends.includes('afternoon');
+    document.getElementById('weekendEvening').checked = availability.weekends.includes('evening');
+    document.getElementById('weekendAllDay').checked = availability.weekends.includes('all-day');
+}
+
+// Save availability
+function saveAvailability() {
+    const weekdays = [];
+    const weekends = [];
+    
+    if (document.getElementById('weekdayMorning').checked) weekdays.push('morning');
+    if (document.getElementById('weekdayAfternoon').checked) weekdays.push('afternoon');
+    if (document.getElementById('weekdayEvening').checked) weekdays.push('evening');
+    if (document.getElementById('weekendMorning').checked) weekends.push('morning');
+    if (document.getElementById('weekendAfternoon').checked) weekends.push('afternoon');
+    if (document.getElementById('weekendEvening').checked) weekends.push('evening');
+    if (document.getElementById('weekendAllDay').checked) weekends.push('all-day');
+    
+    // Update in data manager
+    dataManager.updateCurrentUser({
+        ...currentUser,
+        availability: { weekdays, weekends }
+    });
+    
+    // Update current user
+    currentUser = dataManager.getCurrentUser();
+    
+    // Add activity
+    dataManager.addActivity({
+        type: "availability",
+        text: "Updated availability settings",
+        icon: "fas fa-clock"
+    });
+    
+    updateAvailabilityDisplay();
+    closeAvailabilityModal();
+    showToast('Availability updated successfully!', 'success');
+}
+
+// Update availability display
+function updateAvailabilityDisplay() {
+    const availabilityGrid = document.getElementById('availabilityGrid');
+    if (!availabilityGrid) return;
+    
+    availabilityGrid.innerHTML = '';
+    
+    const availability = currentUser.availability;
+    
+    if (availability.weekdays.length > 0) {
+        const weekdayDiv = document.createElement('div');
+        weekdayDiv.className = 'availability-item';
+        weekdayDiv.innerHTML = `
+            <span class="day">Weekdays</span>
+            <span class="time">${availability.weekdays.join(', ')}</span>
+        `;
+        availabilityGrid.appendChild(weekdayDiv);
+    }
+    
+    if (availability.weekends.length > 0) {
+        const weekendDiv = document.createElement('div');
+        weekendDiv.className = 'availability-item';
+        weekendDiv.innerHTML = `
+            <span class="day">Weekends</span>
+            <span class="time">${availability.weekends.join(', ')}</span>
+        `;
+        availabilityGrid.appendChild(weekendDiv);
+    }
 } 
